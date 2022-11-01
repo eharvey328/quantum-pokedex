@@ -1,1 +1,2 @@
-export * from "./PokemonList";
+export * from "./DetailView";
+export * from "./ListView";

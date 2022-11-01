@@ -1,7 +1,9 @@
-import "../src/styles/global.scss";
+import { ApolloProvider } from "@apollo/client";
+import CssBaseline from "@mui/joy/CssBaseline";
+import { CssVarsProvider } from "@mui/joy/styles";
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import { ApolloProvider } from "@apollo/client";
+
 import { client } from "../src/lib/apollo";
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -12,7 +14,10 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <ApolloProvider client={client}>
-        <Component {...pageProps} />
+        <CssVarsProvider>
+          <CssBaseline />
+          <Component {...pageProps} />
+        </CssVarsProvider>
       </ApolloProvider>
     </>
   );
