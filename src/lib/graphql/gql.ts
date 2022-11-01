@@ -3,9 +3,11 @@ import * as types from './graphql';
 import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 
 const documents = {
+    "\n  query PokemonByName($name: String!) {\n    pokemonByName(name: $name) {\n      id\n      number\n      name\n      weight {\n        minimum\n        maximum\n      }\n      height {\n        minimum\n        maximum\n      }\n      types\n      maxCP\n      maxHP\n      evolutions {\n        id\n        name\n      }\n      previousEvolutions {\n        id\n        name\n      }\n      sound\n      isFavorite\n    }\n  }\n": types.PokemonByNameDocument,
     "\n  query ListPokemons($query: PokemonsQueryInput!) {\n    pokemons(query: $query) {\n      limit\n      offset\n      count\n      edges {\n        id\n        name\n        image\n      }\n    }\n  }\n": types.ListPokemonsDocument,
 };
 
+export function graphql(source: "\n  query PokemonByName($name: String!) {\n    pokemonByName(name: $name) {\n      id\n      number\n      name\n      weight {\n        minimum\n        maximum\n      }\n      height {\n        minimum\n        maximum\n      }\n      types\n      maxCP\n      maxHP\n      evolutions {\n        id\n        name\n      }\n      previousEvolutions {\n        id\n        name\n      }\n      sound\n      isFavorite\n    }\n  }\n"): (typeof documents)["\n  query PokemonByName($name: String!) {\n    pokemonByName(name: $name) {\n      id\n      number\n      name\n      weight {\n        minimum\n        maximum\n      }\n      height {\n        minimum\n        maximum\n      }\n      types\n      maxCP\n      maxHP\n      evolutions {\n        id\n        name\n      }\n      previousEvolutions {\n        id\n        name\n      }\n      sound\n      isFavorite\n    }\n  }\n"];
 export function graphql(source: "\n  query ListPokemons($query: PokemonsQueryInput!) {\n    pokemons(query: $query) {\n      limit\n      offset\n      count\n      edges {\n        id\n        name\n        image\n      }\n    }\n  }\n"): (typeof documents)["\n  query ListPokemons($query: PokemonsQueryInput!) {\n    pokemons(query: $query) {\n      limit\n      offset\n      count\n      edges {\n        id\n        name\n        image\n      }\n    }\n  }\n"];
 
 export function graphql(source: string): unknown;
