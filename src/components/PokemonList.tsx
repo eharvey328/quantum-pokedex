@@ -10,6 +10,7 @@ import Sheet from "@mui/joy/Sheet";
 import Typography from "@mui/joy/Typography";
 import Image from "next/image";
 import { default as NextLink } from "next/link";
+import { InView } from "react-intersection-observer";
 
 import { graphql } from "../lib/graphql";
 import { PokemonsQueryInput } from "../lib/graphql/graphql";
@@ -30,10 +31,7 @@ const ListPokemonsQuery = graphql(`
   }
 `);
 
-const baseQuery: PokemonsQueryInput = {
-  limit: 20,
-  offset: 0,
-};
+const PAGE_SIZE = 20;
 
 export interface PokemonListProps {
   search: string;
@@ -47,10 +45,10 @@ export const PokemonList = ({
   onlyFavorites,
 }: PokemonListProps) => {
   const query: PokemonsQueryInput = {
-    ...baseQuery,
+    limit: PAGE_SIZE,
     search,
     filter: {
-      type,
+      ...(type && { type }),
       ...(onlyFavorites && { isFavorite: onlyFavorites }),
     },
   };
@@ -84,13 +82,13 @@ export const PokemonList = ({
     });
   };
 
-  const areMore = pokemons.length < totalPokemons;
+  const hasMore = pokemons.length < totalPokemons;
 
   return (
     <>
       <Grid container spacing={2}>
         {pokemons.map(({ id, name, image, isFavorite }) => (
-          <Grid xs={6} sm={4} md={3} lg={2} key={id}>
+          <Grid xs={6} sm={3} key={id}>
             <Card>
               <Typography level="h2" fontSize="md" sx={{ mb: 1 }}>
                 <Link
@@ -135,10 +133,18 @@ export const PokemonList = ({
           </Grid>
         ))}
       </Grid>
-      {areMore && (
-        <Button onClick={() => loadMore()} disabled={loadingMore}>
-          {loadingMore ? "Loading..." : "Show More"}
-        </Button>
+      {loadingMore && <span>Loading...</span>}
+      {hasMore ? (
+        <InView
+          rootMargin="200px 0px"
+          onChange={(inView) => {
+            if (inView) loadMore();
+          }}
+        />
+      ) : (
+        pokemons.length > PAGE_SIZE && (
+          <span>You&apos;ve reached the end of the list</span>
+        )
       )}
     </>
   );
