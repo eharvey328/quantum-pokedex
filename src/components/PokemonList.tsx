@@ -30,26 +30,6 @@ const ListPokemonsQuery = graphql(`
   }
 `);
 
-// const FavoriteMutation = graphql(`
-//   mutation FavoritePokemon($id: ID!) {
-//     favoritePokemon(id: $id) {
-//       id
-//       name
-//       isFavorite
-//     }
-//   }
-// `);
-
-// const UnFavoriteMutation = graphql(`
-//   mutation UnFavoritePokemon($id: ID!) {
-//     unFavoritePokemon(id: $id) {
-//       id
-//       name
-//       isFavorite
-//     }
-//   }
-// `);
-
 const baseQuery: PokemonsQueryInput = {
   limit: 20,
   offset: 0,
