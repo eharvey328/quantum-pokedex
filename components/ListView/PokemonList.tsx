@@ -1,9 +1,7 @@
 import { NetworkStatus, useQuery } from "@apollo/client";
-import UnfavoriteIcon from "@mui/icons-material/FavoriteBorderRounded";
 import FavoriteIcon from "@mui/icons-material/FavoriteRounded";
-import Button from "@mui/joy/Button";
 import Card from "@mui/joy/Card";
-import CircularProgress from "@mui/joy/CircularProgress";
+// import CircularProgress from "@mui/joy/CircularProgress";
 import Grid from "@mui/joy/Grid";
 import Link from "@mui/joy/Link";
 import Sheet from "@mui/joy/Sheet";
@@ -12,8 +10,8 @@ import Image from "next/image";
 import { default as NextLink } from "next/link";
 import { InView } from "react-intersection-observer";
 
-import { graphql } from "../lib/graphql";
-import { PokemonsQueryInput } from "../lib/graphql/graphql";
+import { graphql } from "@lib/graphql";
+import { PokemonsQueryInput } from "@lib/graphql/graphql";
 
 const ListPokemonsQuery = graphql(`
   query ListPokemons($query: PokemonsQueryInput!) {
@@ -35,21 +33,17 @@ const PAGE_SIZE = 20;
 
 export interface PokemonListProps {
   search: string;
-  type: string | null;
-  onlyFavorites: boolean;
+  type: string;
+  isFavorite: boolean;
 }
 
-export const PokemonList = ({
-  search,
-  type,
-  onlyFavorites,
-}: PokemonListProps) => {
+export const PokemonList = ({ search, type, isFavorite }: PokemonListProps) => {
   const query: PokemonsQueryInput = {
     limit: PAGE_SIZE,
     search,
     filter: {
       ...(type && { type }),
-      ...(onlyFavorites && { isFavorite: onlyFavorites }),
+      ...(isFavorite && { isFavorite }),
     },
   };
 
@@ -66,7 +60,7 @@ export const PokemonList = ({
 
   const loadingMore = networkStatus === NetworkStatus.fetchMore;
 
-  if (loading && !loadingMore) return <CircularProgress />;
+  // if (loading && !loadingMore) return <CircularProgress />;
   if (!data || error) return null;
 
   const { edges: pokemons, count: totalPokemons } = data.pokemons;
@@ -87,7 +81,7 @@ export const PokemonList = ({
   return (
     <>
       <Grid container spacing={2}>
-        {pokemons.map(({ id, name, image, isFavorite }) => (
+        {pokemons.map(({ id, name, image, isFavorite }, index) => (
           <Grid xs={6} sm={3} key={id}>
             <Card>
               <Typography level="h2" fontSize="md" sx={{ mb: 1 }}>
@@ -101,15 +95,15 @@ export const PokemonList = ({
                 </Link>
               </Typography>
               <Sheet
-                color="danger"
                 sx={{
                   position: "absolute",
                   top: "0.5rem",
                   right: "0.5rem",
                   pointerEvents: "none",
+                  color: isFavorite ? "red" : "lightgrey",
                 }}
               >
-                {isFavorite ? <FavoriteIcon /> : <UnfavoriteIcon />}
+                <FavoriteIcon />
               </Sheet>
               <div
                 style={{
@@ -123,6 +117,7 @@ export const PokemonList = ({
                   alt={`${name} artwork`}
                   fill
                   sizes="33vw"
+                  priority={index < PAGE_SIZE / 2}
                   style={{
                     background: "#FFF",
                     objectFit: "contain",

@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 
-import { graphql } from "../lib/graphql";
+import { graphql } from "../../lib/graphql";
 
 const PokemonByNameQuery = graphql(`
   query PokemonByName($name: String!) {
