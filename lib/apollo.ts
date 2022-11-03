@@ -1,7 +1,6 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
-import { concatPagination } from "@apollo/client/utilities";
 
-import { QueryPokemonsArgs } from "./graphql/graphql";
+import { QueryPokemonsArgs } from "@lib/graphql/graphql";
 
 export const client = new ApolloClient({
   uri: process.env.NEXT_PUBLIC_POKEDEX_ENDPOINT,
@@ -21,7 +20,12 @@ export const client = new ApolloClient({
       },
       PokemonConnection: {
         fields: {
-          edges: concatPagination(),
+          edges: {
+            keyArgs: false,
+            merge(existing = [], incoming) {
+              return [...existing, ...incoming];
+            },
+          },
         },
       },
     },

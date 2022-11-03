@@ -1,0 +1,29 @@
+$colors: (
+  bug: #9dc130,
+  dark: #5f606d,
+  dragon: #0773c7,
+  electric: #edd53f,
+  fairy: #ef97e6,
+  fighting: #d94256,
+  fire: #ca9760,
+  flying: #9bb4e8,
+  ghost: #6970c5,
+  grass: #5dbe62,
+  ground: #d78555,
+  ice: #7ed4c9,
+  normal: #9a9da1,
+  poison: #b563ce,
+  psychic: #f87c7a,
+  rock: #cec18c,
+  steel: #5596a4,
+  water: #559edf,
+);
+
+@each $key, $value in $colors {
+  .bg-#{$key} {
+    background-color: $value;
+  }
+  .color-#{$key} {
+    color: $value;
+  }
+}
