@@ -6,5 +6,5 @@ export interface LayoutProps {
   children: ReactNode;
 }
 export const Layout = ({ children }: LayoutProps) => {
-  return <main className={styles.page_container}>{children}</main>;
+  return <main className={styles.main}>{children}</main>;
 };

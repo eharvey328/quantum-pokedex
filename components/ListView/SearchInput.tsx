@@ -32,6 +32,7 @@ export const SearchInput = ({ defaultValue, onChange }: SearchInputProps) => {
       onKeyUp={handleKeyUp}
       size="lg"
       placeholder="Search for Pokemon"
+      variant="soft"
       startDecorator={<SearchIcon />}
       endDecorator={
         value && (
