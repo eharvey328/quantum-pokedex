@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 
 import { DetailView, Layout } from "../../components";
 
-export default function Slug() {
+export default function DetailPage() {
   const router = useRouter();
   const slugParam = router.query.slug;
   const slug = Array.isArray(slugParam) ? slugParam[0] : slugParam;

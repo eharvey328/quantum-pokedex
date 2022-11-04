@@ -1,8 +1,8 @@
 import Head from "next/head";
 
-import { Layout, ListView } from "@components";
+import { Layout, ListView, Navigation } from "@components";
 
-export default function Home() {
+export default function HomePage() {
   return (
     <>
       <Head>
@@ -12,6 +12,9 @@ export default function Home() {
 
       <Layout>
         <h1>Pokedex</h1>
+        <div style={{ marginBottom: "1rem" }}>
+          <Navigation />
+        </div>
         <ListView />
       </Layout>
     </>

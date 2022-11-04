@@ -1,17 +1,13 @@
 import { NetworkStatus, useQuery } from "@apollo/client";
-import FavoriteIcon from "@mui/icons-material/FavoriteRounded";
-import Card from "@mui/joy/Card";
 // import CircularProgress from "@mui/joy/CircularProgress";
+import { Typography } from "@mui/joy";
 import Grid from "@mui/joy/Grid";
-import Link from "@mui/joy/Link";
-import Sheet from "@mui/joy/Sheet";
-import Typography from "@mui/joy/Typography";
-import Image from "next/image";
-import { default as NextLink } from "next/link";
 import { InView } from "react-intersection-observer";
 
 import { graphql } from "@lib/graphql";
 import { PokemonsQueryInput } from "@lib/graphql/graphql";
+
+import { PokemonCard } from "./PokemonCard";
 
 const ListPokemonsQuery = graphql(`
   query ListPokemons($query: PokemonsQueryInput!) {
@@ -23,6 +19,7 @@ const ListPokemonsQuery = graphql(`
         id
         name
         image
+        types
         isFavorite
       }
     }
@@ -33,7 +30,7 @@ const PAGE_SIZE = 20;
 
 export interface PokemonListProps {
   search: string;
-  type: string;
+  type: string | null;
   isFavorite: boolean;
 }
 
@@ -80,51 +77,13 @@ export const PokemonList = ({ search, type, isFavorite }: PokemonListProps) => {
 
   return (
     <>
+      <Typography sx={{ mb: 1 }} textColor="neutral.500" fontSize="sm">
+        {totalPokemons} results
+      </Typography>
       <Grid container spacing={2}>
-        {pokemons.map(({ id, name, image, isFavorite }, index) => (
-          <Grid xs={6} sm={3} key={id}>
-            <Card>
-              <Typography level="h2" fontSize="md" sx={{ mb: 1 }}>
-                <Link
-                  overlay
-                  underline="none"
-                  href={`/detail/${name.toLowerCase()}`}
-                  component={NextLink}
-                >
-                  {name}
-                </Link>
-              </Typography>
-              <Sheet
-                sx={{
-                  position: "absolute",
-                  top: "0.5rem",
-                  right: "0.5rem",
-                  pointerEvents: "none",
-                  color: isFavorite ? "red" : "lightgrey",
-                }}
-              >
-                <FavoriteIcon />
-              </Sheet>
-              <div
-                style={{
-                  position: "relative",
-                  aspectRatio: 1 / 1,
-                  pointerEvents: "none",
-                }}
-              >
-                <Image
-                  src={image}
-                  alt={`${name} artwork`}
-                  fill
-                  sizes="33vw"
-                  priority={index < PAGE_SIZE / 2}
-                  style={{
-                    background: "#FFF",
-                    objectFit: "contain",
-                  }}
-                />
-              </div>
-            </Card>
+        {pokemons.map((pokemon, index) => (
+          <Grid xs={6} sm={3} key={pokemon.id}>
+            <PokemonCard pokemon={pokemon} isPriorityImage={index < 10} />
           </Grid>
         ))}
       </Grid>
