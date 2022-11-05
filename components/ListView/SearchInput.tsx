@@ -1,8 +1,8 @@
 import ClearIcon from "@mui/icons-material/ClearRounded";
 import SearchIcon from "@mui/icons-material/SearchRounded";
-import IconButton from "@mui/joy/IconButton";
-import Input from "@mui/joy/Input";
 import { KeyboardEvent, useState } from "react";
+
+import { Input, IconButton } from "..";
 
 export interface SearchInputProps {
   defaultValue?: string;
@@ -30,13 +30,11 @@ export const SearchInput = ({ defaultValue, onChange }: SearchInputProps) => {
       value={value}
       onChange={(event) => setValue(event.target.value)}
       onKeyUp={handleKeyUp}
-      size="lg"
       placeholder="Search for Pokemon"
-      variant="soft"
-      startDecorator={<SearchIcon />}
-      endDecorator={
+      startAdornment={<SearchIcon />}
+      endAdornment={
         value && (
-          <IconButton size="sm" variant="plain" color="neutral" onClick={clear}>
+          <IconButton onClick={clear}>
             <ClearIcon />
           </IconButton>
         )

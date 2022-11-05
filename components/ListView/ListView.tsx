@@ -1,13 +1,10 @@
+import AppsIcon from "@mui/icons-material/AppsRounded";
+import FavoriteIcon from "@mui/icons-material/FavoriteBorderRounded";
 import { Grid } from "@mui/joy";
-import RadioGroup from "@mui/joy/RadioGroup";
-import Tab from "@mui/joy/Tab";
-import TabList from "@mui/joy/TabList";
-import Typography from "@mui/joy/Typography";
-import Box from "@mui/material/Box";
-import Radio from "@mui/material/Radio";
-import Tabs from "@mui/material/Tabs";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+
+import { Pill } from "../shared";
 
 import { PokemonList } from "./PokemonList";
 import { SearchInput } from "./SearchInput";
@@ -16,6 +13,19 @@ import { TypeSelect } from "./TypeSelect";
 const normalizeQueryParam = (param: string | string[] | undefined) => {
   return Array.isArray(param) ? param[0] : param;
 };
+
+const favoritesFilterItems = [
+  {
+    icon: <AppsIcon />,
+    label: "All",
+    value: "all",
+  },
+  {
+    icon: <FavoriteIcon />,
+    label: "Favorites",
+    value: "favorites",
+  },
+];
 
 export interface ListViewProps {
   isFavorite?: boolean;
@@ -47,7 +57,8 @@ export const ListView = ({ isFavorite = false }: ListViewProps) => {
           <SearchInput defaultValue={search} onChange={setSearch} />
         </Grid>
         <Grid>
-          <TypeSelect value={type} onChange={setType} />
+          <Pill name="favorites filter" items={favoritesFilterItems} />
+          {/* <TypeSelect value={type} onChange={setType} /> */}
         </Grid>
       </Grid>
       {/* <Tabs>

@@ -1,4 +1,45 @@
-$colors: (
+$grey: (
+  50: #f7f7f8,
+  100: #eeeff0,
+  200: #dddee0,
+  300: #bdbfc4,
+  400: #9da1ac,
+  500: #81848f,
+  600: #646872,
+  700: #42454d,
+  800: #272930,
+  900: #131418,
+);
+
+$blue: (
+  50: #f4faff,
+  100: #ddf1ff,
+  200: #addbff,
+  300: #6fb6ff,
+  400: #3990ff,
+  500: #096bde,
+  600: #054da7,
+  700: #02367d,
+  800: #072859,
+  900: #00153c,
+);
+
+$primary: map-get($blue, 500);
+$white: #fff;
+$black: map-get($grey, 900);
+
+$text: (
+  "disabled": rgba(0, 0, 0, 0.38),
+  "primary": #131418,
+  "secondary": #42454d,
+);
+
+@function color($name, $shade: 500) {
+  $color: map-get($name, $shade);
+  @return $color;
+}
+
+$pokemon-colors: (
   bug: #9dc130,
   dark: #5f606d,
   dragon: #0773c7,
@@ -18,12 +59,3 @@ $colors: (
   steel: #5596a4,
   water: #559edf,
 );
-
-@each $key, $value in $colors {
-  .bg-#{$key} {
-    background-color: $value;
-  }
-  .color-#{$key} {
-    color: $value;
-  }
-}

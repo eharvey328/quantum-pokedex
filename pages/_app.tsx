@@ -5,8 +5,8 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 
 import { client } from "@lib/apollo";
+
 import "@styles/global.scss";
-import { theme } from "@styles/theme";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -16,7 +16,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <ApolloProvider client={client}>
-        <CssVarsProvider theme={theme}>
+        <CssVarsProvider>
           <CssBaseline />
           <Component {...pageProps} />
         </CssVarsProvider>

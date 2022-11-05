@@ -3,4 +3,14 @@
 
 body {
   overflow-y: scroll;
+  background-color: color($grey, 50);
+}
+
+@each $key, $value in $pokemon-colors {
+  .bg-#{$key} {
+    background-color: $value;
+  }
+  .color-#{$key} {
+    color: $value;
+  }
 }
