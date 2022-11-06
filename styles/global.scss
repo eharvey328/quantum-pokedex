@@ -1,7 +1,15 @@
-@import "PokemonType";
+@import "reset";
 @import "colors";
+@import "variables";
+
+html {
+  font-size: 62.5%; // to use the rem in base-10
+}
 
 body {
+  font-family: $font-family;
+  color: color($text, "primary");
+  font-size: 1.6rem;
   overflow-y: scroll;
   background-color: color($grey, 50);
 }

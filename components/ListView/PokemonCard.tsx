@@ -1,14 +1,34 @@
-import FavoriteIcon from "@mui/icons-material/FavoriteRounded";
-import Card from "@mui/joy/Card";
-import Link from "@mui/joy/Link";
-import Sheet from "@mui/joy/Sheet";
-import Typography from "@mui/joy/Typography";
+import { useMutation } from "@apollo/client";
+import clsx from "clsx";
 import Image from "next/image";
 import { default as NextLink } from "next/link";
 
+import { graphql } from "@lib/graphql";
 import { ListPokemonsQuery } from "@lib/graphql/graphql";
 
-import { PokemonTypeIcon } from "..";
+import { Icon, IconButton, PokemonTypeIcon } from "../shared";
+
+import styles from "./ListView.module.scss";
+
+const FavoritePokemon = graphql(`
+  mutation FavoritePokemon($id: ID!) {
+    favoritePokemon(id: $id) {
+      id
+      name
+      isFavorite
+    }
+  }
+`);
+
+const UnFavoritePokemon = graphql(`
+  mutation UnFavoritePokemon($id: ID!) {
+    unFavoritePokemon(id: $id) {
+      id
+      name
+      isFavorite
+    }
+  }
+`);
 
 export interface PokemonCardProps {
   pokemon: ListPokemonsQuery["pokemons"]["edges"][0];
@@ -17,81 +37,53 @@ export interface PokemonCardProps {
 
 export const PokemonCard = ({ pokemon, isPriorityImage }: PokemonCardProps) => {
   const { id, name, image, types, isFavorite } = pokemon;
+
+  const [favorite] = useMutation(FavoritePokemon);
+  const [unFavorite] = useMutation(UnFavoritePokemon);
+
+  const handleFavoriteClick = () => {
+    isFavorite
+      ? unFavorite({ variables: { id } })
+      : favorite({ variables: { id } });
+  };
+
   return (
-    <Card
-      variant="plain"
-      sx={{
-        "--Card-padding": "1.5rem",
-        boxShadow: "none",
-        "&:hover": {
-          boxShadow: "md",
-        },
-      }}
-    >
-      <Sheet
-        sx={{
-          position: "absolute",
-          top: "1rem",
-          right: "1rem",
-          pointerEvents: "none",
-          color: isFavorite ? "#d94256" : "#e0e0e0",
-          zIndex: 1,
-        }}
+    <li className={styles.card}>
+      <IconButton
+        className={styles.favorite_button}
+        onClick={handleFavoriteClick}
       >
-        <FavoriteIcon />
-      </Sheet>
-      <div
-        style={{
-          position: "relative",
-          aspectRatio: 1 / 1,
-          pointerEvents: "none",
-          margin: "1rem",
-        }}
-      >
+        <Icon
+          className={clsx({ [styles.favorited]: isFavorite })}
+          name={isFavorite ? "favorite-filled" : "favorite"}
+          label="favorite"
+        />
+      </IconButton>
+      <div className={styles.image_container}>
         <Image
+          className={styles.pokemon_image}
           src={image}
           alt={`${name} artwork`}
           fill
-          sizes="20vw"
+          sizes="20rem"
           priority={isPriorityImage}
-          style={{
-            background: "#FFF",
-            objectFit: "contain",
-          }}
         />
       </div>
       <div>
-        <Typography
-          fontSize="md"
-          sx={{ fontWeight: 700, color: "text.tertiary", opacity: 0.7 }}
-        >
-          &#35;{id}
-        </Typography>
-
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <Typography level="h2" fontSize="md" sx={{ mr: 1 }}>
-            <Link
-              overlay
-              underline="none"
-              href={`/detail/${name.toLowerCase()}`}
-              component={NextLink}
-              sx={{ color: "text.primary", fontSize: "1.2rem" }}
-            >
-              {name}
-            </Link>
-          </Typography>
+        <p className={styles.pokemon_id}>&#35;{id}</p>
+        <div className={styles.pokemon_name_container}>
+          <h2 className={styles.pokemon_name}>
+            <NextLink href={`/detail/${name.toLowerCase()}`}>{name}</NextLink>
+          </h2>
           {types.map((type) => (
-            <span key={type} style={{ marginRight: ".2rem" }}>
-              <PokemonTypeIcon type={type} />
-            </span>
+            <PokemonTypeIcon
+              className={styles.type_icon}
+              key={type}
+              type={type}
+            />
           ))}
         </div>
       </div>
-    </Card>
+    </li>
   );
 };

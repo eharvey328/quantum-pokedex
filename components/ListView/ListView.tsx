@@ -1,11 +1,9 @@
-import AppsIcon from "@mui/icons-material/AppsRounded";
-import FavoriteIcon from "@mui/icons-material/FavoriteBorderRounded";
-import { Grid } from "@mui/joy";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import { Pill } from "../shared";
+import { Icon, Option, Pill, Select } from "../shared";
 
+import styles from "./ListView.module.scss";
 import { PokemonList } from "./PokemonList";
 import { SearchInput } from "./SearchInput";
 import { TypeSelect } from "./TypeSelect";
@@ -16,69 +14,57 @@ const normalizeQueryParam = (param: string | string[] | undefined) => {
 
 const favoritesFilterItems = [
   {
-    icon: <AppsIcon />,
+    icon: <Icon name="apps" size="sm" />,
     label: "All",
     value: "all",
   },
   {
-    icon: <FavoriteIcon />,
+    icon: <Icon name="favorite" size="sm" />,
     label: "Favorites",
     value: "favorites",
   },
 ];
 
-export interface ListViewProps {
-  isFavorite?: boolean;
-}
-
-export const ListView = ({ isFavorite = false }: ListViewProps) => {
+export const ListView = () => {
   const router = useRouter();
 
   const [search, setSearch] = useState(
     () => normalizeQueryParam(router.query.q) ?? ""
   );
   const [type, setType] = useState(
-    () => normalizeQueryParam(router.query.type) ?? null
+    () => normalizeQueryParam(router.query.type) ?? ""
+  );
+  const [isFavorite, setIsFavorite] = useState(
+    () => !!normalizeQueryParam(router.query.favorites)
   );
 
   useEffect(() => {
     const query = {
       ...(search && { q: search }),
       ...(type && { type }),
+      ...(isFavorite && { favorites: 1 }),
     };
     router.push({ query }, undefined, { shallow: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search, type]);
+  }, [search, type, isFavorite]);
 
   return (
     <>
-      <Grid spacing={2} container style={{ marginBottom: "1rem" }}>
-        <Grid xs={6}>
-          <SearchInput defaultValue={search} onChange={setSearch} />
-        </Grid>
-        <Grid>
-          <Pill name="favorites filter" items={favoritesFilterItems} />
-          {/* <TypeSelect value={type} onChange={setType} /> */}
-        </Grid>
-      </Grid>
-      {/* <Tabs>
-        <TabList variant="soft" color="neutral">
-          <Tab>...</Tab>
-        </TabList>
-      </Tabs> */}
-      {/* <Typography
-          component="label"
-          endDecorator={
-            <Switch
-              checked={isFavorite}
-              onChange={(event) => setIsFavorite(event.target.checked)}
-              sx={{ ml: 1 }}
-            />
-          }
-        >
-          Favorites
-        </Typography> */}
-
+      <div className={styles.search_filter}>
+        <SearchInput
+          className={styles.search}
+          defaultValue={search}
+          onChange={setSearch}
+        />
+        <div className={styles.filter}>
+          <Pill
+            name="favorites filter"
+            items={favoritesFilterItems}
+            onChange={(value) => setIsFavorite(value === "favorites")}
+          />
+          <TypeSelect value={type} onChange={setType} />
+        </div>
+      </div>
       <PokemonList search={search} type={type} isFavorite={isFavorite} />
     </>
   );

@@ -1,4 +1,5 @@
 import { InputUnstyled, InputUnstyledProps } from "@mui/base";
+import clsx from "clsx";
 import * as React from "react";
 
 import styles from "./Input.module.scss";
@@ -6,11 +7,12 @@ import styles from "./Input.module.scss";
 export const Input = ({
   startAdornment,
   endAdornment,
+  className,
   ...props
 }: InputUnstyledProps) => {
   return (
     <InputUnstyled
-      className={styles.root}
+      className={clsx(styles.root, className)}
       slotProps={{ input: { className: styles.input } }}
       {...props}
       startAdornment={

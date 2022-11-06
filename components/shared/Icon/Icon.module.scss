@@ -1,0 +1,22 @@
+@import "../../../styles/variables";
+
+.svg {
+  user-select: none;
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  fill: currentColor;
+  flex-shrink: 0;
+  transition: fill $transition-timing;
+  color: inherit;
+  font-size: 2.4rem;
+  pointer-events: none;
+}
+
+.sm {
+  font-size: 1.8rem;
+}
+
+.lg {
+  font-size: 3.6rem;
+}
