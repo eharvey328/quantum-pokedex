@@ -1,12 +1,10 @@
 import { NetworkStatus, useQuery } from "@apollo/client";
-// import CircularProgress from "@mui/joy/CircularProgress";
-import { Typography } from "@mui/joy";
-import Grid from "@mui/joy/Grid";
-import { InView } from "react-intersection-observer";
 
 import { graphql } from "@lib/graphql";
 import { PokemonsQueryInput } from "@lib/graphql/graphql";
 
+import { InfiniteScroll } from "./InfiniteScroll";
+import styles from "./ListView.module.scss";
 import { PokemonCard } from "./PokemonCard";
 
 const ListPokemonsQuery = graphql(`
@@ -77,29 +75,22 @@ export const PokemonList = ({ search, type, isFavorite }: PokemonListProps) => {
 
   return (
     <>
-      <Typography sx={{ mb: 1 }} textColor="neutral.500" fontSize="sm">
-        {totalPokemons} results
-      </Typography>
-      <Grid container spacing={2}>
+      <p className={styles.count_message}>Found {totalPokemons} results</p>
+      <ol className={styles.pokemon_grid}>
         {pokemons.map((pokemon, index) => (
-          <Grid xs={6} sm={3} key={pokemon.id}>
-            <PokemonCard pokemon={pokemon} isPriorityImage={index < 10} />
-          </Grid>
+          <PokemonCard
+            key={`${pokemon.id}${index}`}
+            pokemon={pokemon}
+            isPriorityImage={index < 8}
+          />
         ))}
-      </Grid>
-      {loadingMore && <span>Loading...</span>}
-      {hasMore ? (
-        <InView
-          rootMargin="200px 0px"
-          onChange={(inView) => {
-            if (inView) loadMore();
-          }}
-        />
-      ) : (
-        pokemons.length > PAGE_SIZE && (
-          <span>You&apos;ve reached the end of the list</span>
-        )
-      )}
+      </ol>
+      <InfiniteScroll
+        loadMore={loadMore}
+        loading={loadingMore}
+        hasMore={hasMore}
+        showEndMessage={pokemons.length > PAGE_SIZE}
+      />
     </>
   );
 };

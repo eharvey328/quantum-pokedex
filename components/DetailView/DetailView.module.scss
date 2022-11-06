@@ -1,0 +1,10 @@
+.image_container {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  max-height: 40rem;
+}
+
+.pokemon_image {
+  background: #fff;
+  object-fit: contain;
+}

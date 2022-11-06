@@ -1,0 +1,81 @@
+@import "../../../styles/variables";
+
+.root {
+  height: 3.6rem;
+  padding-left: 1.6rem;
+  // 18px for icon and 16px padding each
+  padding-right: calc(1.8rem + (1.6rem * 2));
+  font-family: $font-family;
+  font-size: 1.6rem;
+  border-radius: $border-radius;
+  background: transparent;
+  border: $border;
+  position: relative;
+  cursor: pointer;
+  min-width: 0;
+
+  // transition-property: all;
+  // transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  // transition-duration: 120ms;
+
+  // &:hover {
+  //   background: ${theme.palette.mode === "dark" ? grey[800] : grey[50]};
+  //   border-color: ${theme.palette.mode === "dark" ? grey[600] : grey[300]};
+  // }
+
+  &:global(.Mui-selected) {
+    outline: $focus-ring;
+  }
+
+  & > svg {
+    color: color($grey, 700);
+    position: absolute;
+    height: 100%;
+    top: 0;
+    right: 1.6rem;
+  }
+}
+
+.listbox {
+  box-sizing: border-box;
+  padding: 6px;
+  margin: 0;
+  min-width: 200px;
+  max-height: 300px;
+  border-radius: 12px;
+  overflow: auto;
+  outline: 0;
+  background: "#fff";
+  color: color($text, "primary");
+}
+
+.option {
+  list-style: none;
+  padding: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: $white;
+  transition: background-color $transition-timing;
+
+  &:last-of-type {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background-color: color($grey, 100);
+  }
+
+  &:global(.Mui-selected) {
+    background-color: color($blue, 100);
+    color: color($blue, 00);
+  }
+}
+
+.popper {
+  z-index: 2;
+  overflow: hidden;
+  border-radius: 12px;
+  border: $border;
+  box-shadow: $shadow-md;
+  background-color: $white;
+}

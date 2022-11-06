@@ -1,3 +1,113 @@
-.TypeSelect {
-  min-width: 160px;
+@import "../../styles/variables";
+
+.search_filter {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2.4rem;
+}
+
+.search {
+  margin-bottom: 1.4rem;
+}
+
+.filter {
+  display: flex;
+  & > *:not(:last-child) {
+    margin-right: 0.8rem;
+  }
+}
+
+.count_message {
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.pokemon_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  grid-gap: 1.6rem;
+}
+
+.card {
+  background-color: $white;
+  border-radius: 12px;
+  transition: box-shadow $transition-timing;
+  padding: 2rem;
+  position: relative;
+
+  &:hover {
+    box-shadow: $shadow-md;
+  }
+}
+
+.favorite_button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1;
+
+  & > svg {
+    color: color($grey, 400);
+    font-size: 2rem;
+
+    &.favorited {
+      color: #d94256;
+    }
+  }
+}
+
+.image_container {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  margin: 1.6rem;
+}
+
+.pokemon_image {
+  background: #fff;
+  object-fit: contain;
+}
+
+.pokemon_id {
+  color: color($grey, 500);
+  font-weight: bold;
+  font-size: 1.4rem;
+}
+
+.pokemon_name_container {
+  display: flex;
+  align-items: center;
+}
+
+.pokemon_name {
+  font-size: 2rem;
+  color: color($text, "primary");
+  margin-right: 0.5rem;
+
+  a {
+    &:focus-visible {
+      outline: none;
+      &::after {
+        outline: $focus-ring;
+      }
+    }
+    &::after {
+      content: "";
+      display: block;
+      position: absolute;
+      border-radius: 12px;
+      inset: 0;
+    }
+  }
+}
+
+.type_icon {
+  margin-right: 0.2rem;
+}
+
+.infinite_scroll_container {
+  margin: 2rem;
+  font-size: 1.4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
