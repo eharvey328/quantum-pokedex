@@ -3,7 +3,7 @@
 .search_filter {
   display: flex;
   flex-direction: column;
-  margin-bottom: 2.4rem;
+  margin: 2.4rem 0;
 }
 
 .search {
@@ -67,12 +67,6 @@
   object-fit: contain;
 }
 
-.pokemon_id {
-  color: color($grey, 500);
-  font-weight: bold;
-  font-size: 1.4rem;
-}
-
 .pokemon_name_container {
   display: flex;
   align-items: center;
@@ -110,4 +104,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.modal {
+  width: 54rem;
 }

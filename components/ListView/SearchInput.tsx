@@ -3,7 +3,7 @@
 import clsx from "clsx";
 import { KeyboardEvent, useState } from "react";
 
-import { Input, IconButton, Icon } from "..";
+import { Input, Button, Icon } from "..";
 
 export interface SearchInputProps {
   defaultValue?: string;
@@ -41,9 +41,9 @@ export const SearchInput = ({
       startAdornment={<Icon name="search" />}
       endAdornment={
         value && (
-          <IconButton onClick={clear}>
+          <Button onClick={clear}>
             <Icon name="close" label="clear" />
-          </IconButton>
+          </Button>
         )
       }
     />

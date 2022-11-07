@@ -1,0 +1,9 @@
+@import "../../../styles/variables";
+
+.icon {
+  color: color($grey, 400);
+
+  &.favorited {
+    color: #d94256;
+  }
+}

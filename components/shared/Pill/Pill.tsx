@@ -1,54 +1,42 @@
 import clsx from "clsx";
-import { ChangeEvent, ReactNode, useState } from "react";
+import { ReactNode } from "react";
 
 import styles from "./Pill.module.scss";
 
 export interface PillItem {
   label: string;
-  value: string;
+  value: number;
   icon?: ReactNode;
 }
 
-export interface PillProps {
+export interface PillProps<T = unknown> {
+  value: number;
   name: string;
   items: PillItem[];
-  className?: string;
-  onChange?: (value: string) => void;
+  onChange: (value: T) => void;
 }
 
-export const Pill = ({
-  name,
-  items,
-  className,
-  onChange = () => {},
-}: PillProps) => {
-  const [selected, setSelected] = useState(items[0].value);
-  // const test = useIsFocusVisible();
-
-  // console.log(test);
+export const Pill = ({ value, name, items, onChange }: PillProps) => {
   return (
-    <fieldset className={clsx(styles.radiogroup, className)} role="radiogroup">
+    <fieldset className={styles.radiogroup} role="radiogroup">
       <legend className={styles.legend}>{name}</legend>
-      {items.map(({ label, value, icon }) => {
-        const checked = selected === value;
+      {items.map((item) => {
+        const checked = value === item.value;
         return (
           <label
-            key={label}
-            className={`${styles.label} ${checked ? styles.selected : ""}`}
+            key={item.label}
+            className={clsx(styles.label, { [styles.selected]: checked })}
           >
             <input
               className={styles.radio}
               type="radio"
               name="pill"
-              value={value}
+              value={item.value}
               checked={checked}
-              onChange={() => {
-                setSelected(value);
-                onChange(value);
-              }}
+              onChange={() => onChange(item.value)}
             />
-            {icon && <span className={styles.icon}>{icon}</span>}
-            {label}
+            {item.icon && <span className={styles.icon}>{item.icon}</span>}
+            {item.label}
           </label>
         );
       })}

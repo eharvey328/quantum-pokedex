@@ -1,10 +1,58 @@
+@import "../../styles/variables";
+
+.header {
+  display: flex;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.container {
+  background: $white;
+  padding: 2rem;
+  border-radius: 12px;
+  position: relative;
+
+  & > * {
+    flex: 1;
+  }
+}
+
 .image_container {
   position: relative;
-  aspect-ratio: 1 / 1;
-  max-height: 40rem;
+  aspect-ratio: 4 / 3;
+  width: 100%;
+  margin-bottom: 2rem;
 }
 
 .pokemon_image {
-  background: #fff;
+  background: $white;
   object-fit: contain;
+  padding: 1rem;
+  border-radius: 12px;
+}
+
+.type:not(:last-of-type) {
+  margin-right: 0.4rem;
+}
+
+.evolution_container {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1.5rem;
+  margin-bottom: 2rem;
+
+  li {
+    display: flex;
+  }
+}
+
+.evolution {
+  position: relative;
+  aspect-ratio: 1/1;
+  width: 100%;
+  border: $border;
+  border-radius: 12px;
 }

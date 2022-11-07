@@ -1,0 +1,28 @@
+@import "../../../styles/variables";
+
+.icon_container,
+.chip_container {
+  display: inline-flex;
+  align-items: center;
+  color: $white;
+}
+
+.icon_container {
+  padding: 0.4rem;
+  border-radius: 50%;
+
+  & > .icon {
+    font-size: 1.2rem;
+  }
+}
+
+.chip_container {
+  padding: 0.5rem 1.5rem 0.5rem 1rem;
+  border-radius: $border-radius;
+  font-weight: 500;
+
+  & > .icon {
+    font-size: 1.2rem;
+    margin-right: 0.75rem;
+  }
+}
