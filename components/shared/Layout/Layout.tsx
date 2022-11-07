@@ -1,16 +1,17 @@
+import Link from "next/link";
 import { ReactNode } from "react";
+
+import { Button, Icon } from "@components/shared";
 
 import styles from "./Layout.module.scss";
 
 export interface LayoutProps {
-  title: string;
   children: ReactNode;
+  size?: string;
+  backLink?: string;
 }
-export const Layout = ({ title, children }: LayoutProps) => {
+export const Layout = ({ children, size, backLink }: LayoutProps) => {
   return (
-    <main className={styles.main}>
-      <h1 className={styles.page_header}>{title}</h1>
-      {children}
-    </main>
+    <main className={size ? styles.main_sm : styles.main}>{children}</main>
   );
 };

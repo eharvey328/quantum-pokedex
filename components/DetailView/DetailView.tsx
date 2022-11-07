@@ -1,10 +1,13 @@
 import { useQuery } from "@apollo/client";
 import Image from "next/image";
-import NextLink from "next/link";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import React from "react";
 
+import { PokemonSummary } from "@components/ListView/PokemonCard";
 import { graphql } from "@lib/graphql";
 
-import { Icon, IconButton, PokemonTypeIcon } from "../shared";
+import { PokemonType, FavoriteButton } from "../shared";
 
 import styles from "./DetailView.module.scss";
 
@@ -29,10 +32,12 @@ const PokemonByNameQuery = graphql(`
       evolutions {
         id
         name
+        image
       }
       previousEvolutions {
         id
         name
+        image
       }
       sound
       isFavorite
@@ -42,18 +47,23 @@ const PokemonByNameQuery = graphql(`
 
 export interface DetailViewProps {
   slug: string;
+  initialData?: PokemonSummary | null;
+  rewriteLink?: string;
 }
 
-export const DetailView = ({ slug }: DetailViewProps) => {
+export const DetailView = ({
+  slug,
+  initialData,
+  rewriteLink,
+}: DetailViewProps) => {
   const { data, loading, error } = useQuery(PokemonByNameQuery, {
     variables: { name: slug },
   });
 
   if (loading) return <p>Loading...</p>;
-  if (!data || error) return null;
 
-  const pokemon = data.pokemonByName;
-  if (!pokemon) return <p>Not found.</p>;
+  const pokemon = data?.pokemonByName;
+  if (!pokemon || error) return <p>Not found.</p>;
 
   const {
     id,
@@ -72,74 +82,87 @@ export const DetailView = ({ slug }: DetailViewProps) => {
   const sortById = (a: { id: string }, b: { id: string }) => +a.id - +b.id;
 
   const evolutions = [
-    ...[...previousEvolutions].sort(sortById),
+    ...[...(previousEvolutions ?? [])].sort(sortById),
     pokemon,
-    ...[...nextEvolutions].sort(sortById),
+    ...[...(nextEvolutions ?? [])].sort(sortById),
   ];
 
   return (
     <div>
-      <NextLink href="/"> - Back</NextLink>
-      <p>&#35;{id}</p>
-      <h2>{name}</h2>
-      <div className={styles.image_container}>
-        <Image
-          className={styles.pokemon_image}
-          src={image}
-          alt={`${name} artwork`}
-          fill
-          sizes="33vw"
-          priority
-        />
-      </div>
+      <div className={styles.container}>
+        <div className={styles.image_container}>
+          <Image
+            className={styles.pokemon_image}
+            src={image ?? ""}
+            alt={`${name} artwork`}
+            fill
+            priority
+            sizes="400px"
+          />
+        </div>
+        <div className={styles.header}>
+          <div>
+            <p className="subtitle">&#35;{id}</p>
+            <h1 className="h1">{name}</h1>
+          </div>
+          <FavoriteButton filled={isFavorite} />
+        </div>
 
-      <IconButton>
-        <Icon
-          name={isFavorite ? "favorite-filled" : "favorite"}
-          label="favorite"
-        />
-      </IconButton>
+        <div>
+          <ul style={{ display: "inline-flex" }}>
+            {types?.map((type: string) => (
+              <li key={type} className={styles.type}>
+                <PokemonType type={type} display="chip" />
+              </li>
+            ))}
+          </ul>
 
-      <div>
-        <label>Height: </label>
-        {height.minimum} - {height.maximum}
-      </div>
+          <h2 className="h2">Stats</h2>
+          <div>
+            <label>Height: </label>
+            {height?.minimum} - {height?.maximum}
+          </div>
 
-      <div>
-        <label>Weight: </label>
-        {weight.minimum} - {weight.maximum}
-      </div>
+          <div>
+            <label>Weight: </label>
+            {weight?.minimum} - {weight?.maximum}
+          </div>
 
-      <div>
-        <label>Types: </label>
-        <ul style={{ display: "inline-flex" }}>
-          {types.map((type) => (
-            <li key={type}>
-              <PokemonTypeIcon type={type} />
-            </li>
-          ))}
-        </ul>
-      </div>
+          <div>
+            <label>Max CP: </label>
+            {maxCP}
+          </div>
 
-      <div>
-        <label>Max CP: </label>
-        {maxCP}
-      </div>
+          <div>
+            <label>Max HP: </label>
+            {maxHP}
+          </div>
 
-      <div>
-        <label>Max HP: </label>
-        {maxHP}
-      </div>
-
-      <div>
-        <label>Evolutions: </label>
-        <ul style={{ display: "inline-flex" }}>
-          {evolutions.map(({ name }) => (
-            <li key={name}>
-              <NextLink href={`/detail/${name.toLowerCase()}`}>{name}</NextLink>
-            </li>
-          ))}
-        </ul>
+          <h2 className="h2">Evolutions</h2>
+          <div>
+            <ul className={styles.evolution_container}>
+              {evolutions.map(({ name, image }) => (
+                <li key={name}>
+                  <Link
+                    className={styles.evolution}
+                    href={`${rewriteLink ?? "/detail/"}${name.toLowerCase()}`}
+                    as={rewriteLink && `/detail/${name.toLowerCase()}`}
+                    replace={!!rewriteLink}
+                    shallow={!!rewriteLink}
+                  >
+                    <Image
+                      className={styles.pokemon_image}
+                      src={image}
+                      alt={`${name} artwork`}
+                      fill
+                      sizes="150px"
+                    />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   );

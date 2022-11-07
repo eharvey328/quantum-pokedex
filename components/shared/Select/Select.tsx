@@ -4,15 +4,15 @@ import SelectUnstyled, {
   SelectUnstyledRootSlotProps,
 } from "@mui/base/SelectUnstyled";
 import clsx from "clsx";
-import * as React from "react";
+import { forwardRef, ForwardedRef } from "react";
 
 import { Icon } from "../Icon/Icon";
 
 import styles from "./Select.module.scss";
 
-const SelectRoot = React.forwardRef(function Button<TValue extends {}>(
+const SelectRoot = forwardRef(function Button<TValue extends {}>(
   props: SelectUnstyledRootSlotProps<TValue>,
-  ref: React.ForwardedRef<HTMLButtonElement>
+  ref: ForwardedRef<HTMLButtonElement>
 ) {
   const { ownerState, ...other } = props;
   return (

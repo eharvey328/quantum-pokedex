@@ -1,11 +1,12 @@
 import { NetworkStatus, useQuery } from "@apollo/client";
+import React from "react";
 
 import { graphql } from "@lib/graphql";
 import { PokemonsQueryInput } from "@lib/graphql/graphql";
 
 import { InfiniteScroll } from "./InfiniteScroll";
 import styles from "./ListView.module.scss";
-import { PokemonCard } from "./PokemonCard";
+import { PokemonCard, PokemonSummary } from "./PokemonCard";
 
 const ListPokemonsQuery = graphql(`
   query ListPokemons($query: PokemonsQueryInput!) {
@@ -28,17 +29,23 @@ const PAGE_SIZE = 20;
 
 export interface PokemonListProps {
   search: string;
-  type: string | null;
+  type: string;
   isFavorite: boolean;
+  onPokemonClick: (value: PokemonSummary) => void;
 }
 
-export const PokemonList = ({ search, type, isFavorite }: PokemonListProps) => {
+const _PokemonList = ({
+  search,
+  type,
+  isFavorite,
+  onPokemonClick,
+}: PokemonListProps) => {
   const query: PokemonsQueryInput = {
     limit: PAGE_SIZE,
     search,
     filter: {
-      ...(type && { type }),
-      ...(isFavorite && { isFavorite }),
+      type,
+      isFavorite,
     },
   };
 
@@ -79,9 +86,10 @@ export const PokemonList = ({ search, type, isFavorite }: PokemonListProps) => {
       <ol className={styles.pokemon_grid}>
         {pokemons.map((pokemon, index) => (
           <PokemonCard
-            key={`${pokemon.id}${index}`}
+            key={pokemon.id}
             pokemon={pokemon}
             isPriorityImage={index < 8}
+            onClick={onPokemonClick}
           />
         ))}
       </ol>
@@ -94,3 +102,6 @@ export const PokemonList = ({ search, type, isFavorite }: PokemonListProps) => {
     </>
   );
 };
+
+const PokemonList = React.memo(_PokemonList);
+export { PokemonList };

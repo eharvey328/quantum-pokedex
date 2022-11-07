@@ -1,12 +1,12 @@
 import { useMutation } from "@apollo/client";
 import clsx from "clsx";
 import Image from "next/image";
-import { default as NextLink } from "next/link";
+import Link from "next/link";
+import React from "react";
 
+import { Icon, Button, PokemonType, FavoriteButton } from "@components/shared";
 import { graphql } from "@lib/graphql";
 import { ListPokemonsQuery } from "@lib/graphql/graphql";
-
-import { Icon, IconButton, PokemonTypeIcon } from "../shared";
 
 import styles from "./ListView.module.scss";
 
@@ -30,12 +30,19 @@ const UnFavoritePokemon = graphql(`
   }
 `);
 
+export type PokemonSummary = ListPokemonsQuery["pokemons"]["edges"][0];
+
 export interface PokemonCardProps {
-  pokemon: ListPokemonsQuery["pokemons"]["edges"][0];
+  pokemon: PokemonSummary;
+  onClick: (pokemon: PokemonSummary) => void;
   isPriorityImage?: boolean;
 }
 
-export const PokemonCard = ({ pokemon, isPriorityImage }: PokemonCardProps) => {
+const _PokemonCard = ({
+  pokemon,
+  onClick,
+  isPriorityImage,
+}: PokemonCardProps) => {
   const { id, name, image, types, isFavorite } = pokemon;
 
   const [favorite] = useMutation(FavoritePokemon);
@@ -49,16 +56,12 @@ export const PokemonCard = ({ pokemon, isPriorityImage }: PokemonCardProps) => {
 
   return (
     <li className={styles.card}>
-      <IconButton
+      <FavoriteButton
         className={styles.favorite_button}
         onClick={handleFavoriteClick}
-      >
-        <Icon
-          className={clsx({ [styles.favorited]: isFavorite })}
-          name={isFavorite ? "favorite-filled" : "favorite"}
-          label="favorite"
-        />
-      </IconButton>
+        filled={isFavorite}
+      />
+
       <div className={styles.image_container}>
         <Image
           className={styles.pokemon_image}
@@ -70,20 +73,28 @@ export const PokemonCard = ({ pokemon, isPriorityImage }: PokemonCardProps) => {
         />
       </div>
       <div>
-        <p className={styles.pokemon_id}>&#35;{id}</p>
+        <p className="subtitle">&#35;{id}</p>
         <div className={styles.pokemon_name_container}>
           <h2 className={styles.pokemon_name}>
-            <NextLink href={`/detail/${name.toLowerCase()}`}>{name}</NextLink>
+            <Link
+              href={`/?name=${name.toLowerCase()}`}
+              as={`/detail/${name.toLowerCase()}`}
+              onClick={() => onClick(pokemon)}
+            >
+              {name}
+            </Link>
           </h2>
           {types.map((type) => (
-            <PokemonTypeIcon
-              className={styles.type_icon}
-              key={type}
-              type={type}
-            />
+            <PokemonType className={styles.type_icon} key={type} type={type} />
           ))}
         </div>
       </div>
     </li>
   );
 };
+
+const PokemonCard = React.memo(
+  _PokemonCard,
+  (prev, next) => prev.pokemon.id === next.pokemon.id
+);
+export { PokemonCard };
