@@ -18,8 +18,9 @@
 
 .chip_container {
   padding: 0.5rem 1.5rem 0.5rem 1rem;
-  border-radius: $border-radius;
+  border-radius: $border-radius-lg;
   font-weight: 500;
+  font-size: 1.4rem;
 
   & > .icon {
     font-size: 1.2rem;

@@ -1,6 +1,7 @@
 @import "reset";
 @import "colors";
 @import "variables";
+@import "breakpoints";
 
 html {
   font-size: 62.5%; // to use the rem in base-10
@@ -27,12 +28,17 @@ body {
   color: color($grey, 500);
   font-weight: bold;
   font-size: 1.4rem;
+
+  @include media("md") {
+    font-size: 1.2rem;
+  }
 }
 
 @each $key, $value in $pokemon-colors {
   .bg-#{$key} {
     background-color: $value;
   }
+
   .color-#{$key} {
     color: $value;
   }

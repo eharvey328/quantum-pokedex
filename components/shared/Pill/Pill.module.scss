@@ -8,7 +8,7 @@
   display: inline-flex;
   border: $border;
   background-color: transparent;
-  border-radius: $border-radius;
+  border-radius: $border-radius-lg;
 }
 
 .legend {
@@ -45,13 +45,13 @@
 
   &:first-of-type,
   &:first-of-type > .radio {
-    border-top-left-radius: $border-radius;
-    border-bottom-left-radius: $border-radius;
+    border-top-left-radius: $border-radius-lg;
+    border-bottom-left-radius: $border-radius-lg;
   }
   &:last-of-type,
   &:last-of-type > .radio {
-    border-top-right-radius: $border-radius;
-    border-bottom-right-radius: $border-radius;
+    border-top-right-radius: $border-radius-lg;
+    border-bottom-right-radius: $border-radius-lg;
   }
 
   &.selected {

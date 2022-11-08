@@ -1,34 +1,12 @@
-import { useMutation } from "@apollo/client";
-import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 
-import { Icon, Button, PokemonType, FavoriteButton } from "@components/shared";
-import { graphql } from "@lib/graphql";
+import { PokemonType, FavoriteButton } from "@components/shared";
 import { ListPokemonsQuery } from "@lib/graphql/graphql";
 
 import styles from "./ListView.module.scss";
-
-const FavoritePokemon = graphql(`
-  mutation FavoritePokemon($id: ID!) {
-    favoritePokemon(id: $id) {
-      id
-      name
-      isFavorite
-    }
-  }
-`);
-
-const UnFavoritePokemon = graphql(`
-  mutation UnFavoritePokemon($id: ID!) {
-    unFavoritePokemon(id: $id) {
-      id
-      name
-      isFavorite
-    }
-  }
-`);
 
 export type PokemonSummary = ListPokemonsQuery["pokemons"]["edges"][0];
 
@@ -38,23 +16,19 @@ export interface PokemonCardProps {
 }
 
 const _PokemonCard = ({ pokemon, isPriorityImage }: PokemonCardProps) => {
+  const { query } = useRouter();
   const { id, name, image, types, isFavorite } = pokemon;
-
-  const [favorite] = useMutation(FavoritePokemon);
-  const [unFavorite] = useMutation(UnFavoritePokemon);
-
-  const handleFavoriteClick = () => {
-    isFavorite
-      ? unFavorite({ variables: { id } })
-      : favorite({ variables: { id } });
+  const href = {
+    pathname: "/",
+    query: { ...query, name: name.toLowerCase() },
   };
 
   return (
     <li className={styles.card}>
       <FavoriteButton
         className={styles.favorite_button}
-        onClick={handleFavoriteClick}
-        filled={isFavorite}
+        isFavorite={isFavorite}
+        pokemonId={id}
       />
 
       <div className={styles.image_container}>
@@ -67,21 +41,17 @@ const _PokemonCard = ({ pokemon, isPriorityImage }: PokemonCardProps) => {
           priority={isPriorityImage}
         />
       </div>
-      <div>
-        <p className="subtitle">&#35;{id}</p>
-        <div className={styles.pokemon_name_container}>
-          <h2 className={styles.pokemon_name}>
-            <Link
-              href={`/?name=${name.toLowerCase()}`}
-              as={`/detail/${name.toLowerCase()}`}
-            >
-              {name}
-            </Link>
-          </h2>
-          {types.map((type) => (
-            <PokemonType className={styles.type_icon} key={type} type={type} />
-          ))}
-        </div>
+
+      <p className="subtitle">&#35;{id}</p>
+      <div className={styles.pokemon_name_container}>
+        <h2 className={styles.pokemon_name}>
+          <Link href={href} as={`/detail/${name.toLowerCase()}`}>
+            {name}
+          </Link>
+        </h2>
+        {types.map((type) => (
+          <PokemonType className={styles.type_icon} key={type} type={type} />
+        ))}
       </div>
     </li>
   );

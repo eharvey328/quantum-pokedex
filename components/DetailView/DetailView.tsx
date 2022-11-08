@@ -1,14 +1,16 @@
+import { ParsedUrlQuery } from "querystring";
+
 import { useQuery } from "@apollo/client";
 import clsx from "clsx";
+import Head from "next/head";
 import Image from "next/image";
-import Link from "next/link";
 import React from "react";
 
+import { PokemonType, FavoriteButton, Range } from "@components/shared";
 import { graphql } from "@lib/graphql";
 
-import { PokemonType, FavoriteButton, Range } from "../shared";
-
 import styles from "./DetailView.module.scss";
+import { Evolutions } from "./Evolutions";
 
 const PokemonByNameQuery = graphql(`
   query PokemonByName($name: String!) {
@@ -47,42 +49,45 @@ const PokemonByNameQuery = graphql(`
 export interface DetailViewProps {
   slug: string;
   rewriteLink?: string;
+  queryParams?: ParsedUrlQuery;
 }
 
-export const DetailView = ({ slug, rewriteLink }: DetailViewProps) => {
+export const DetailView = ({
+  slug,
+  rewriteLink,
+  queryParams,
+}: DetailViewProps) => {
   const { data, loading, error } = useQuery(PokemonByNameQuery, {
     variables: { name: slug },
   });
 
-  if (loading) return <p>Loading...</p>;
+  const standalonePage = !queryParams?.name;
+
+  if (loading) {
+    return (
+      <p className={clsx(styles.container, styles.container_empty)}>
+        Loading...
+      </p>
+    );
+  }
 
   const pokemon = data?.pokemonByName;
-  if (!pokemon || error) return <p>Not found.</p>;
+  if (!pokemon || error) {
+    return (
+      <p className={clsx(styles.container, styles.container_empty)}>
+        Not found.
+      </p>
+    );
+  }
 
-  const {
-    id,
-    name,
-    image,
-    height,
-    weight,
-    types,
-    maxCP,
-    maxHP,
-    isFavorite,
-    evolutions: nextEvolutions,
-    previousEvolutions,
-  } = pokemon;
-
-  const sortById = (a: { id: string }, b: { id: string }) => +a.id - +b.id;
-
-  const evolutions = [
-    ...[...(previousEvolutions ?? [])].sort(sortById),
-    pokemon,
-    ...[...(nextEvolutions ?? [])].sort(sortById),
-  ];
+  const { id, name, image, height, weight, types, maxCP, maxHP, isFavorite } =
+    pokemon;
 
   return (
-    <div>
+    <>
+      <Head>
+        <title>Pokédex Details | {name}</title>
+      </Head>
       <div className={styles.container}>
         <div className={styles.image_container}>
           <Image
@@ -90,7 +95,7 @@ export const DetailView = ({ slug, rewriteLink }: DetailViewProps) => {
             src={image ?? ""}
             alt={`${name} artwork`}
             fill
-            priority
+            priority={standalonePage}
             sizes="400px"
           />
         </div>
@@ -100,7 +105,7 @@ export const DetailView = ({ slug, rewriteLink }: DetailViewProps) => {
             <p className="subtitle">&#35;{id}</p>
             <h1 className="h1">{name}</h1>
           </div>
-          <FavoriteButton filled={isFavorite} />
+          <FavoriteButton isFavorite={isFavorite} pokemonId={id} />
         </div>
 
         <div>
@@ -113,50 +118,39 @@ export const DetailView = ({ slug, rewriteLink }: DetailViewProps) => {
           </ul>
 
           <h2 className={clsx(styles.subheader, "h2")}>Statistics</h2>
-          <div style={{ marginBottom: "1rem" }}>
-            <label>Height: </label>
-            {height.minimum} - {height.maximum}
+          <div className={styles.stat}>
+            <label>Height</label>
+            <span className={styles.stat_item}>
+              <span> {height.minimum}</span>
+              <span>-</span>
+              <span> {height.maximum}</span>
+            </span>
           </div>
 
-          <div style={{ marginBottom: "1rem" }}>
-            <label>Weight: </label>
-            {weight.minimum} - {weight.maximum}
+          <div className={styles.stat}>
+            <label>Weight</label>
+            <span className={styles.stat_item}>
+              <span>{weight.minimum}</span>
+              <span>-</span>
+              <span>{weight.maximum}</span>
+            </span>
           </div>
 
-          <div>
-            <Range label="Max CP" value={+maxCP} min={203} max={3500} />
+          <div className={styles.stat}>
+            <Range label="Max CP" value={+maxCP} min={200} max={3900} />
           </div>
-
-          <div>
-            <Range label="Max HP" value={+maxHP} min={2062} max={4000} />
+          <div className={styles.stat}>
+            <Range label="Max HP" value={+maxHP} min={200} max={3900} />
           </div>
 
           <h2 className={clsx(styles.subheader, "h2")}>Evolutions</h2>
-          <div>
-            <ul className={styles.evolution_container}>
-              {evolutions.map(({ name, image }) => (
-                <li key={name}>
-                  <Link
-                    className={styles.evolution}
-                    href={`${rewriteLink ?? "/detail/"}${name.toLowerCase()}`}
-                    as={rewriteLink && `/detail/${name.toLowerCase()}`}
-                    replace={!!rewriteLink}
-                    shallow={!!rewriteLink}
-                  >
-                    <Image
-                      className={styles.pokemon_image}
-                      src={image}
-                      alt={`${name} artwork`}
-                      fill
-                      sizes="150px"
-                    />
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <Evolutions
+            pokemon={pokemon}
+            rewriteLink={rewriteLink}
+            queryParams={queryParams}
+          />
         </div>
       </div>
-    </div>
+    </>
   );
 };

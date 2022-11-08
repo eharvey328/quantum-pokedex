@@ -1,14 +1,10 @@
-import { ModalUnstyled } from "@mui/base";
-import { useQueryState } from "next-usequerystate";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 
 import { DetailView } from "@components/DetailView";
-import { Icon, Option, Pill, Select, Modal } from "@components/shared";
+import { Icon, Pill, Modal, Button } from "@components/shared";
+import normalizeQueryParam from "@lib/normalizeQueryParam";
 
 import styles from "./ListView.module.scss";
-import { PokemonSummary } from "./PokemonCard";
 import { PokemonList } from "./PokemonList";
 import { SearchInput } from "./SearchInput";
 import { TypeSelect } from "./TypeSelect";
@@ -34,6 +30,7 @@ export interface ListViewProps {
 
 export const ListView = ({ search, type, favorite }: ListViewProps) => {
   const router = useRouter();
+  const selectedName = normalizeQueryParam(router.query.name);
 
   const updateUrl = (newValue: any) => {
     const merged = { ...router.query, ...newValue };
@@ -48,14 +45,13 @@ export const ListView = ({ search, type, favorite }: ListViewProps) => {
 
   return (
     <>
-      {router.query.name && (
-        <Modal open onClose={() => router.push("/")}>
-          <div className={styles.modal}>
-            <DetailView
-              slug={(router.query.name as string) ?? ""}
-              rewriteLink="/?name="
-            />
-          </div>
+      {selectedName && (
+        <Modal open onClose={() => router.back()}>
+          <DetailView
+            slug={selectedName}
+            rewriteLink="/"
+            queryParams={router.query}
+          />
         </Modal>
       )}
 
@@ -73,7 +69,7 @@ export const ListView = ({ search, type, favorite }: ListViewProps) => {
             onChange={(value) => updateUrl({ favorite: value })}
           />
           <TypeSelect
-            value={(type as string) ?? ""}
+            value={type}
             onChange={(value) => updateUrl({ type: value })}
           />
         </div>
