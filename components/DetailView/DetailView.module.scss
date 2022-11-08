@@ -19,6 +19,11 @@
   }
 }
 
+.subheader {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
 .image_container {
   position: relative;
   aspect-ratio: 4 / 3;
@@ -33,6 +38,11 @@
   border-radius: 12px;
 }
 
+.types {
+  margin-top: 0.5rem;
+  display: inline-flex;
+}
+
 .type:not(:last-of-type) {
   margin-right: 0.4rem;
 }
@@ -42,7 +52,7 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 1.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 
   li {
     display: flex;

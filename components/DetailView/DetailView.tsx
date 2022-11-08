@@ -1,13 +1,12 @@
 import { useQuery } from "@apollo/client";
+import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import React from "react";
 
-import { PokemonSummary } from "@components/ListView/PokemonCard";
 import { graphql } from "@lib/graphql";
 
-import { PokemonType, FavoriteButton } from "../shared";
+import { PokemonType, FavoriteButton, Range } from "../shared";
 
 import styles from "./DetailView.module.scss";
 
@@ -47,15 +46,10 @@ const PokemonByNameQuery = graphql(`
 
 export interface DetailViewProps {
   slug: string;
-  initialData?: PokemonSummary | null;
   rewriteLink?: string;
 }
 
-export const DetailView = ({
-  slug,
-  initialData,
-  rewriteLink,
-}: DetailViewProps) => {
+export const DetailView = ({ slug, rewriteLink }: DetailViewProps) => {
   const { data, loading, error } = useQuery(PokemonByNameQuery, {
     variables: { name: slug },
   });
@@ -100,6 +94,7 @@ export const DetailView = ({
             sizes="400px"
           />
         </div>
+
         <div className={styles.header}>
           <div>
             <p className="subtitle">&#35;{id}</p>
@@ -109,7 +104,7 @@ export const DetailView = ({
         </div>
 
         <div>
-          <ul style={{ display: "inline-flex" }}>
+          <ul className={styles.types}>
             {types?.map((type: string) => (
               <li key={type} className={styles.type}>
                 <PokemonType type={type} display="chip" />
@@ -117,28 +112,26 @@ export const DetailView = ({
             ))}
           </ul>
 
-          <h2 className="h2">Stats</h2>
-          <div>
+          <h2 className={clsx(styles.subheader, "h2")}>Statistics</h2>
+          <div style={{ marginBottom: "1rem" }}>
             <label>Height: </label>
-            {height?.minimum} - {height?.maximum}
+            {height.minimum} - {height.maximum}
           </div>
 
-          <div>
+          <div style={{ marginBottom: "1rem" }}>
             <label>Weight: </label>
-            {weight?.minimum} - {weight?.maximum}
+            {weight.minimum} - {weight.maximum}
           </div>
 
           <div>
-            <label>Max CP: </label>
-            {maxCP}
+            <Range label="Max CP" value={+maxCP} min={203} max={3500} />
           </div>
 
           <div>
-            <label>Max HP: </label>
-            {maxHP}
+            <Range label="Max HP" value={+maxHP} min={2062} max={4000} />
           </div>
 
-          <h2 className="h2">Evolutions</h2>
+          <h2 className={clsx(styles.subheader, "h2")}>Evolutions</h2>
           <div>
             <ul className={styles.evolution_container}>
               {evolutions.map(({ name, image }) => (

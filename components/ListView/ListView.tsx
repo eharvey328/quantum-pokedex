@@ -34,7 +34,6 @@ export interface ListViewProps {
 
 export const ListView = ({ search, type, favorite }: ListViewProps) => {
   const router = useRouter();
-  const [selected, setSelected] = useState<PokemonSummary | null>(null);
 
   const updateUrl = (newValue: any) => {
     const merged = { ...router.query, ...newValue };
@@ -50,17 +49,10 @@ export const ListView = ({ search, type, favorite }: ListViewProps) => {
   return (
     <>
       {router.query.name && (
-        <Modal
-          open
-          onClose={() => {
-            router.push("/");
-            setSelected(null);
-          }}
-        >
+        <Modal open onClose={() => router.push("/")}>
           <div className={styles.modal}>
             <DetailView
               slug={(router.query.name as string) ?? ""}
-              initialData={selected}
               rewriteLink="/?name="
             />
           </div>
@@ -86,12 +78,7 @@ export const ListView = ({ search, type, favorite }: ListViewProps) => {
           />
         </div>
       </div>
-      <PokemonList
-        search={search}
-        type={type}
-        isFavorite={!!favorite}
-        onPokemonClick={(value) => setSelected(value)}
-      />
+      <PokemonList search={search} type={type} isFavorite={!!favorite} />
     </>
   );
 };
