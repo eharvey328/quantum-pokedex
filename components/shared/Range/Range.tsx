@@ -26,7 +26,7 @@ export const Range = ({
   return (
     <div className={styles.root}>
       <label id={labelId} className={styles.label}>
-        {label}:
+        {label}
       </label>
       <SliderUnstyled
         {...props}

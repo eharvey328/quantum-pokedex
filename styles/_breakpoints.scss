@@ -2,11 +2,11 @@ $breakpoints: (
   xs: 0px,
   sm: 420px,
   md: 640px,
-  lg: 960px,
+  lg: 886px,
   xl: 1200px,
 );
 
-@mixin media($width, $type: min) {
+@mixin media($width, $type: max) {
   @if map_has_key($breakpoints, $width) {
     $width: map_get($breakpoints, $width);
     @if $type == max {

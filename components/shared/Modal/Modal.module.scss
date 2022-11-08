@@ -1,12 +1,13 @@
+@import "../../../styles/variables";
+
 .root {
   position: fixed;
   z-index: 1000;
-  right: 0;
+  top: 4.5rem;
   bottom: 0;
-  top: 0;
   left: 0;
+  right: 0;
   display: flex;
-  align-items: center;
   justify-content: center;
   &:global(.MuiModal-hidden) {
     visibility: hidden;
@@ -22,4 +23,27 @@
   left: 0;
   background-color: rgba(0, 0, 0, 0.4);
   -webkit-tap-highlight-color: transparent;
+}
+
+.content {
+  position: relative;
+  border-top-left-radius: $border-radius;
+}
+
+.scroll_body {
+  min-height: calc(100vh - 9rem);
+  overflow-y: auto;
+}
+
+.close {
+  position: absolute;
+  top: -0.5rem;
+  right: 0;
+  transform: translateY(-100%);
+  background: transparent;
+  color: color($grey, 100);
+
+  &:hover {
+    background: rgba($white, 0.1);
+  }
 }

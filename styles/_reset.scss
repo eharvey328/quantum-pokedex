@@ -6,24 +6,6 @@
   box-sizing: border-box;
 }
 
-html {
-  font-size: $font-size-base / 16px * 100%;
-}
-
-body,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-size: $font-size-base;
-}
-
-body {
-  line-height: $line-height-base;
-}
-
 table {
   border-collapse: collapse;
   border-spacing: 0;
