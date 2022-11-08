@@ -7,3 +7,4 @@ export * from "./Icon/Icon";
 export * from "./Select/Select";
 export * from "./Modal/Modal";
 export * from "./FavoriteButton/FavoriteButton";
+export * from "./Range/Range";

@@ -31,21 +31,15 @@ export interface PokemonListProps {
   search: string;
   type: string;
   isFavorite: boolean;
-  onPokemonClick: (value: PokemonSummary) => void;
 }
 
-const _PokemonList = ({
-  search,
-  type,
-  isFavorite,
-  onPokemonClick,
-}: PokemonListProps) => {
+const _PokemonList = ({ search, type, isFavorite }: PokemonListProps) => {
   const query: PokemonsQueryInput = {
     limit: PAGE_SIZE,
     search,
     filter: {
       type,
-      isFavorite,
+      ...(isFavorite && { isFavorite }),
     },
   };
 
@@ -89,7 +83,6 @@ const _PokemonList = ({
             key={pokemon.id}
             pokemon={pokemon}
             isPriorityImage={index < 8}
-            onClick={onPokemonClick}
           />
         ))}
       </ol>

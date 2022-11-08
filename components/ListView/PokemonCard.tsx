@@ -34,15 +34,10 @@ export type PokemonSummary = ListPokemonsQuery["pokemons"]["edges"][0];
 
 export interface PokemonCardProps {
   pokemon: PokemonSummary;
-  onClick: (pokemon: PokemonSummary) => void;
   isPriorityImage?: boolean;
 }
 
-const _PokemonCard = ({
-  pokemon,
-  onClick,
-  isPriorityImage,
-}: PokemonCardProps) => {
+const _PokemonCard = ({ pokemon, isPriorityImage }: PokemonCardProps) => {
   const { id, name, image, types, isFavorite } = pokemon;
 
   const [favorite] = useMutation(FavoritePokemon);
@@ -79,7 +74,6 @@ const _PokemonCard = ({
             <Link
               href={`/?name=${name.toLowerCase()}`}
               as={`/detail/${name.toLowerCase()}`}
-              onClick={() => onClick(pokemon)}
             >
               {name}
             </Link>
