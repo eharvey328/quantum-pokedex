@@ -1,6 +1,14 @@
 @import "../../styles/variables";
 @import "../../styles/breakpoints";
 
+.empty_container {
+  margin-top: 10rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
 .search_filter {
   display: flex;
   flex-direction: column;
@@ -13,6 +21,9 @@
 
 .filter {
   display: flex;
+  width: 100%;
+  overflow-x: auto;
+
   & > *:not(:last-child) {
     margin-right: 0.8rem;
   }
@@ -79,6 +90,11 @@
 .pokemon_name_container {
   display: flex;
   align-items: center;
+
+  @include media("sm") {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 }
 
 .pokemon_name {
@@ -92,6 +108,10 @@
 
   @include media("md") {
     font-size: 1.6rem;
+  }
+
+  @include media("sm") {
+    font-size: 1.4rem;
   }
 
   a {

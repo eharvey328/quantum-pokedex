@@ -1,5 +1,3 @@
-// import ClearIcon from "@mui/icons-material/ClearRounded";
-// import SearchIcon from "@mui/icons-material/SearchRounded";
 import clsx from "clsx";
 import { KeyboardEvent, useState } from "react";
 

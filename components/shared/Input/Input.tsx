@@ -8,12 +8,13 @@ export const Input = ({
   startAdornment,
   endAdornment,
   className,
+  inputRef,
   ...props
 }: InputUnstyledProps) => {
   return (
     <InputUnstyled
       className={clsx(styles.root, className)}
-      slotProps={{ input: { className: styles.input } }}
+      slotProps={{ input: { className: styles.input, ref: inputRef } }}
       {...props}
       startAdornment={
         startAdornment && (
