@@ -1,10 +1,9 @@
-import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { Button, DetailView, Icon, Layout } from "@components";
-import normalizeQueryParam from "@lib/normalizeQueryParam";
+import { normalizeQueryParam } from "@lib/utils";
 
 export default function DetailPage() {
   const router = useRouter();
@@ -15,7 +14,7 @@ export default function DetailPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!slug) return <p>Pokemon not foud</p>;
+  if (!slug) return <p>Pokémon not foud</p>;
 
   return (
     <Layout size="sm">

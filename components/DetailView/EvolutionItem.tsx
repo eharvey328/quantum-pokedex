@@ -39,6 +39,7 @@ export const EvolutionItem = ({
       as={rewriteLink && `/detail/${name}`}
       replace
       shallow
+      aria-label={name}
     >
       <Image
         className={styles.pokemon_image}

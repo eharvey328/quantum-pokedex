@@ -25,13 +25,9 @@ body {
 }
 
 .subtitle {
-  color: color($grey, 500);
-  font-weight: bold;
-  font-size: 1.4rem;
-
-  @include media("md") {
-    font-size: 1.2rem;
-  }
+  color: color($grey, 600);
+  font-weight: 700;
+  font-size: 1.2rem;
 
   @include media("sm") {
     font-size: 1rem;
