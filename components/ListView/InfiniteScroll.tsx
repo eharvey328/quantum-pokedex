@@ -18,6 +18,7 @@ export const InfiniteScroll = ({
   error,
 }: InfiniteScrollProps) => {
   if (disable) return null;
+
   if (error) {
     return (
       <p className={styles.infinite_scroll_container}>Unable to load more.</p>
@@ -31,8 +32,8 @@ export const InfiniteScroll = ({
   if (hasMore) {
     return (
       <InView
+        data-testid="inview"
         rootMargin="200px 0px"
-        skip={disable}
         onChange={(inView) => {
           if (inView) loadMore();
         }}

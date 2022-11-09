@@ -25,7 +25,8 @@ export const ListPokemonsQuery = graphql(`
   }
 `);
 
-const PAGE_SIZE = 20;
+export const PAGE_SIZE = 20;
+const AVG_ITEMS_IN_VIEW = 8;
 
 export interface PokemonListProps {
   search: string;
@@ -94,7 +95,7 @@ export const PokemonList = ({ search, type, isFavorite }: PokemonListProps) => {
           <PokemonCard
             key={pokemon.id + index}
             pokemon={pokemon}
-            isPriorityImage={index < 8}
+            isPriorityImage={index < AVG_ITEMS_IN_VIEW}
           />
         ))}
       </ol>

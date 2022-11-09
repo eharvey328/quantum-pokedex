@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 
 import { DetailView } from "@components/DetailView";
 import { Icon, Pill, Modal } from "@components/shared";
-import normalizeQueryParam from "@lib/normalizeQueryParam";
+import { removeFalsyObjects, normalizeQueryParam } from "@lib/utils";
 
 import styles from "./ListView.module.scss";
 import { PokemonList } from "./PokemonList";
@@ -30,23 +30,19 @@ export interface ListViewProps {
 
 export const ListView = ({ search, type, favorite }: ListViewProps) => {
   const router = useRouter();
+
   const selectedName = normalizeQueryParam(router.query.name);
 
   const updateUrl = (newValue: any) => {
     const merged = { ...router.query, ...newValue };
-    const query = Object.keys(merged).reduce((acc, key) => {
-      if (merged[key]) {
-        acc = { ...acc, [key]: merged[key] };
-      }
-      return acc;
-    }, {});
+    const query = removeFalsyObjects(merged);
     router.push({ query }, undefined, { shallow: true });
   };
 
   return (
     <>
       {selectedName && (
-        <Modal open onClose={() => router.back()}>
+        <Modal open onClose={() => router.back()} data-testid="detail-modal">
           <DetailView
             slug={selectedName}
             rewriteLink="/"

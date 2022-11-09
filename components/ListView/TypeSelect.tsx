@@ -3,9 +3,9 @@ import React from "react";
 
 import { graphql } from "@lib/graphql";
 
-import { Select, Option } from "../shared";
+import { Select, Option } from "@components/shared";
 
-const PokemonTypesQuery = graphql(`
+export const PokemonTypesQuery = graphql(`
   query PokemonTypes {
     pokemonTypes
   }
@@ -17,15 +17,17 @@ export interface TypeSelectProps {
 }
 
 export const TypeSelect = ({ value, onChange }: TypeSelectProps) => {
-  const { data } = useQuery(PokemonTypesQuery);
+  const { data, loading, error } = useQuery(PokemonTypesQuery);
 
   return (
     <Select
       placeholder="Type"
       value={value}
       onChange={(_, newValue) => onChange(newValue ?? "")}
+      disabled={!!error}
     >
       <Option value="">Type</Option>
+      {loading && <Option value="_loading">Loading...</Option>}
       {data?.pokemonTypes.map((type) => (
         <Option key={type} value={type}>
           {type}

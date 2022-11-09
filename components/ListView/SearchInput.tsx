@@ -14,14 +14,12 @@ export const SearchInput = ({
   className,
   onChange,
 }: SearchInputProps) => {
-  const [value, setValue] = useState(defaultValue);
+  const [value, setValue] = useState(defaultValue ?? "");
 
   const handleKeyUp = (event: KeyboardEvent<HTMLInputElement>) => {
     event.preventDefault();
     if (event.key !== "Enter") return;
-    const newValue = event.currentTarget.value;
-    setValue(newValue);
-    onChange(newValue);
+    onChange(value);
   };
 
   const clear = () => {
@@ -39,7 +37,7 @@ export const SearchInput = ({
       startAdornment={<Icon name="search" />}
       endAdornment={
         value && (
-          <Button onClick={clear}>
+          <Button onClick={clear} aria-label="clear">
             <Icon name="close" label="clear" />
           </Button>
         )
