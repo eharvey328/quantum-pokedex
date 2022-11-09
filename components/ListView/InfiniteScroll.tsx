@@ -6,15 +6,24 @@ export interface InfiniteScrollProps {
   loadMore: () => void;
   loading: boolean;
   hasMore: boolean;
-  showEndMessage: boolean;
+  disable: boolean;
+  error?: Error | null;
 }
 
 export const InfiniteScroll = ({
   loadMore,
   loading,
   hasMore,
-  showEndMessage,
+  disable,
+  error,
 }: InfiniteScrollProps) => {
+  if (disable) return null;
+  if (error) {
+    return (
+      <p className={styles.infinite_scroll_container}>Unable to load more.</p>
+    );
+  }
+
   if (loading) {
     return <p className={styles.infinite_scroll_container}>Loading more...</p>;
   }
@@ -23,6 +32,7 @@ export const InfiniteScroll = ({
     return (
       <InView
         rootMargin="200px 0px"
+        skip={disable}
         onChange={(inView) => {
           if (inView) loadMore();
         }}
@@ -30,13 +40,9 @@ export const InfiniteScroll = ({
     );
   }
 
-  if (showEndMessage) {
-    return (
-      <p className={styles.infinite_scroll_container}>
-        You&apos;ve reached the end of the list.
-      </p>
-    );
-  }
-
-  return null;
+  return (
+    <p className={styles.infinite_scroll_container}>
+      You&apos;ve reached the end of the list.
+    </p>
+  );
 };

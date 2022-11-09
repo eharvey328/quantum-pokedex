@@ -1,6 +1,10 @@
-import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloClient, InMemoryCache, Reference } from "@apollo/client";
 
-import { QueryPokemonsArgs } from "@lib/graphql/graphql";
+const removeDuplicateObjects = (value: any, index: number, self: any) => {
+  return (
+    index === self.findIndex((selfItem: any) => value.__ref === selfItem.__ref)
+  );
+};
 
 export const client = new ApolloClient({
   uri: process.env.NEXT_PUBLIC_POKEDEX_ENDPOINT,
@@ -9,11 +13,7 @@ export const client = new ApolloClient({
       Query: {
         fields: {
           pokemons: {
-            keyArgs: (args) => {
-              const { limit, offset, ...filters } = (args as QueryPokemonsArgs)
-                .query;
-              return JSON.stringify(filters);
-            },
+            keyArgs: ["$query", ["search", "filter"]],
             merge: true,
           },
         },
@@ -23,7 +23,16 @@ export const client = new ApolloClient({
           edges: {
             keyArgs: false,
             merge(existing = [], incoming) {
-              return [...existing, ...incoming];
+              return [...existing, ...incoming].filter(removeDuplicateObjects);
+            },
+            read(existing, { readField }) {
+              return [...existing].sort((a: Reference, b: Reference) => {
+                const id1 = readField("id", a);
+                const id2 = readField("id", b);
+                if (!id1) return 1;
+                if (!id2) return -1;
+                return +id1 - +id2;
+              });
             },
           },
         },

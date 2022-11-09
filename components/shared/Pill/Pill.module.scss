@@ -1,5 +1,6 @@
 @import "../../../styles/variables";
 @import "../../../styles/colors";
+@import "../../../styles/breakpoints";
 
 .radiogroup {
   padding: 0;
@@ -9,6 +10,9 @@
   border: $border;
   background-color: transparent;
   border-radius: $border-radius-lg;
+  @include media("md") {
+    height: 3.4rem;
+  }
 }
 
 .legend {
@@ -42,6 +46,11 @@
   white-space: nowrap;
   background-color: transparent;
   transition: color $transition-timing, background-color $transition-timing;
+
+  @include media("md") {
+    font-size: 1.4rem;
+    padding: 0 1.2rem;
+  }
 
   &:first-of-type,
   &:first-of-type > .radio {

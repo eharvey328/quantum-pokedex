@@ -1,14 +1,20 @@
 @import "../../../styles/variables";
 
+$min-height: 72rem;
+$min-width: 48rem;
+$margin: 4.5rem;
+$total-min-height: calc($min-height + $margin);
+
 .root {
   position: fixed;
   z-index: 1000;
-  top: 4.5rem;
+  top: $margin;
   bottom: 0;
   left: 0;
   right: 0;
   display: flex;
   justify-content: center;
+  height: calc(100vh - $margin);
   &:global(.MuiModal-hidden) {
     visibility: hidden;
   }
@@ -28,10 +34,18 @@
 .content {
   position: relative;
   border-top-left-radius: $border-radius;
+  border-top-right-radius: $border-radius;
+  height: 100%;
+  width: min($min-width, 100%);
+
+  @media only screen and (max-height: 765px) {
+    background-color: $white;
+  }
 }
 
 .scroll_body {
-  min-height: calc(100vh - 9rem);
+  height: 100%;
+  border-top-left-radius: $border-radius;
   overflow-y: auto;
 }
 

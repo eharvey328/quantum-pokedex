@@ -25,7 +25,7 @@ export const TypeSelect = ({ value, onChange }: TypeSelectProps) => {
       value={value}
       onChange={(_, newValue) => onChange(newValue ?? "")}
     >
-      <Option value="">Types</Option>
+      <Option value="">Type</Option>
       {data?.pokemonTypes.map((type) => (
         <Option key={type} value={type}>
           {type}

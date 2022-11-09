@@ -12,7 +12,7 @@ import { graphql } from "@lib/graphql";
 import styles from "./DetailView.module.scss";
 import { Evolutions } from "./Evolutions";
 
-const PokemonByNameQuery = graphql(`
+export const PokemonByNameQuery = graphql(`
   query PokemonByName($name: String!) {
     pokemonByName(name: $name) {
       id
@@ -75,7 +75,7 @@ export const DetailView = ({
   if (!pokemon || error) {
     return (
       <p className={clsx(styles.container, styles.container_empty)}>
-        Not found.
+        Pokémon not found.
       </p>
     );
   }

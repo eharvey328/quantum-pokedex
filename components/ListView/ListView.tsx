@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 
 import { DetailView } from "@components/DetailView";
-import { Icon, Pill, Modal, Button } from "@components/shared";
+import { Icon, Pill, Modal } from "@components/shared";
 import normalizeQueryParam from "@lib/normalizeQueryParam";
 
 import styles from "./ListView.module.scss";

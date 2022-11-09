@@ -1,14 +1,14 @@
 import { NetworkStatus, useQuery } from "@apollo/client";
-import React from "react";
+import React, { useState } from "react";
 
 import { graphql } from "@lib/graphql";
 import { PokemonsQueryInput } from "@lib/graphql/graphql";
 
 import { InfiniteScroll } from "./InfiniteScroll";
 import styles from "./ListView.module.scss";
-import { PokemonCard, PokemonSummary } from "./PokemonCard";
+import { PokemonCard } from "./PokemonCard";
 
-const ListPokemonsQuery = graphql(`
+export const ListPokemonsQuery = graphql(`
   query ListPokemons($query: PokemonsQueryInput!) {
     pokemons(query: $query) {
       limit
@@ -33,7 +33,8 @@ export interface PokemonListProps {
   isFavorite: boolean;
 }
 
-const _PokemonList = ({ search, type, isFavorite }: PokemonListProps) => {
+export const PokemonList = ({ search, type, isFavorite }: PokemonListProps) => {
+  const [fetchMoreError, setFetchMoreError] = useState(null);
   const query: PokemonsQueryInput = {
     limit: PAGE_SIZE,
     search,
@@ -56,8 +57,19 @@ const _PokemonList = ({ search, type, isFavorite }: PokemonListProps) => {
 
   const loadingMore = networkStatus === NetworkStatus.fetchMore;
 
-  // if (loading && !loadingMore) return <CircularProgress />;
-  if (!data || error) return null;
+  if (loading && !loadingMore) {
+    return <p className={styles.empty_container}>Loading...</p>;
+  }
+
+  if (error) {
+    return (
+      <p className={styles.empty_container}>Unable to retrieve results.</p>
+    );
+  }
+
+  if (!data?.pokemons?.edges.length) {
+    return <p className={styles.empty_container}>No Pokémon Found.</p>;
+  }
 
   const { edges: pokemons, count: totalPokemons } = data.pokemons;
 
@@ -69,7 +81,7 @@ const _PokemonList = ({ search, type, isFavorite }: PokemonListProps) => {
           offset: pokemons.length,
         },
       },
-    });
+    }).catch((err) => setFetchMoreError(err));
   };
 
   const hasMore = pokemons.length < totalPokemons;
@@ -80,7 +92,7 @@ const _PokemonList = ({ search, type, isFavorite }: PokemonListProps) => {
       <ol className={styles.pokemon_grid}>
         {pokemons.map((pokemon, index) => (
           <PokemonCard
-            key={pokemon.id}
+            key={pokemon.id + index}
             pokemon={pokemon}
             isPriorityImage={index < 8}
           />
@@ -90,11 +102,9 @@ const _PokemonList = ({ search, type, isFavorite }: PokemonListProps) => {
         loadMore={loadMore}
         loading={loadingMore}
         hasMore={hasMore}
-        showEndMessage={pokemons.length > PAGE_SIZE}
+        disable={error || pokemons.length < PAGE_SIZE}
+        error={fetchMoreError}
       />
     </>
   );
 };
-
-const PokemonList = React.memo(_PokemonList);
-export { PokemonList };

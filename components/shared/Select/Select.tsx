@@ -23,7 +23,10 @@ const SelectRoot = forwardRef(function Button<TValue extends {}>(
   );
 });
 
-export const Select = (props: SelectUnstyledProps<string>) => {
+export const Select = ({
+  className,
+  ...props
+}: SelectUnstyledProps<string>) => {
   return (
     <SelectUnstyled
       slots={{ root: SelectRoot }}
@@ -33,6 +36,7 @@ export const Select = (props: SelectUnstyledProps<string>) => {
         popper: { className: styles.popper },
         ...props.slotProps,
       }}
+      className={clsx(className, { [styles.default]: props?.value === "" })}
       {...props}
     />
   );
@@ -43,6 +47,11 @@ export const Option = ({
   ...props
 }: OptionUnstyledProps<string>) => {
   return (
-    <OptionUnstyled className={clsx(styles.option, className)} {...props} />
+    <OptionUnstyled
+      className={clsx(styles.option, className, {
+        [styles.default]: props?.value === "",
+      })}
+      {...props}
+    />
   );
 };

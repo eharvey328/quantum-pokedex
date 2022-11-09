@@ -1,4 +1,5 @@
 @import "../../../styles/variables";
+@import "../../../styles/breakpoints";
 
 .root {
   height: 3.6rem;
@@ -12,16 +13,12 @@
   border: $border;
   position: relative;
   cursor: pointer;
-  min-width: 0;
+  min-width: auto;
 
-  // transition-property: all;
-  // transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  // transition-duration: 120ms;
-
-  // &:hover {
-  //   background: ${theme.palette.mode === "dark" ? grey[800] : grey[50]};
-  //   border-color: ${theme.palette.mode === "dark" ? grey[600] : grey[300]};
-  // }
+  @include media("md") {
+    font-size: 1.4rem;
+    height: 3.4rem;
+  }
 
   &:global(.Mui-selected) {
     outline: $focus-ring;
@@ -34,6 +31,10 @@
     top: 0;
     right: 1.6rem;
   }
+}
+
+.default {
+  color: color($grey, 600);
 }
 
 .listbox {

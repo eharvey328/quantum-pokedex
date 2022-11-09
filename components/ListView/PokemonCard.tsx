@@ -15,7 +15,7 @@ export interface PokemonCardProps {
   isPriorityImage?: boolean;
 }
 
-const _PokemonCard = ({ pokemon, isPriorityImage }: PokemonCardProps) => {
+export const PokemonCard = ({ pokemon, isPriorityImage }: PokemonCardProps) => {
   const { query } = useRouter();
   const { id, name, image, types, isFavorite } = pokemon;
   const href = {
@@ -49,16 +49,12 @@ const _PokemonCard = ({ pokemon, isPriorityImage }: PokemonCardProps) => {
             {name}
           </Link>
         </h2>
-        {types.map((type) => (
-          <PokemonType className={styles.type_icon} key={type} type={type} />
-        ))}
+        <span>
+          {types.map((type) => (
+            <PokemonType className={styles.type_icon} key={type} type={type} />
+          ))}
+        </span>
       </div>
     </li>
   );
 };
-
-const PokemonCard = React.memo(
-  _PokemonCard,
-  (prev, next) => prev.pokemon.id === next.pokemon.id
-);
-export { PokemonCard };
