@@ -1,7 +1,7 @@
-import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import React from "react";
 
 import { PokemonType, FavoriteButton } from "@components/shared";
 import { ListPokemonsQuery } from "@lib/graphql/graphql";
@@ -12,10 +12,15 @@ export type PokemonSummary = ListPokemonsQuery["pokemons"]["edges"][0];
 
 export interface PokemonCardProps {
   pokemon: PokemonSummary;
+  onError: (message: string) => void;
   isPriorityImage?: boolean;
 }
 
-export const PokemonCard = ({ pokemon, isPriorityImage }: PokemonCardProps) => {
+export const PokemonCard = ({
+  pokemon,
+  isPriorityImage,
+  onError,
+}: PokemonCardProps) => {
   const { query } = useRouter();
   const { id, name, image, types, isFavorite } = pokemon;
 
@@ -32,6 +37,7 @@ export const PokemonCard = ({ pokemon, isPriorityImage }: PokemonCardProps) => {
         className={styles.favorite_button}
         isFavorite={isFavorite}
         pokemonId={id}
+        onError={onError}
       />
 
       <div className={styles.image_container}>

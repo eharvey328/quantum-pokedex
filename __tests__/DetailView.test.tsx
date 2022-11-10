@@ -1,9 +1,10 @@
-import { render, screen } from "@testing-library/react";
 import { MockedProvider } from "@apollo/client/testing";
+import { render, screen } from "@testing-library/react";
+
 import { DetailView } from "@components/DetailView";
+import { POKEMON_BY_NAME } from "@lib/queries";
 
 import { mockPokemonDetail } from "./helpers/mocks";
-import { POKEMON_BY_NAME } from "@lib/queries";
 
 describe("ListView", () => {
   const mockSlug = "bulbasaur";

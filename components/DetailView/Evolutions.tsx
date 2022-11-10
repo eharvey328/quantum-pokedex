@@ -1,4 +1,5 @@
 import { ParsedUrlQuery } from "querystring";
+
 import { ascendingSort } from "@lib/utils";
 
 import styles from "./DetailView.module.scss";

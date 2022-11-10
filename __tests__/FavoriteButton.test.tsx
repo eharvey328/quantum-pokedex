@@ -1,6 +1,7 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-import { FavoriteButton } from "@components/shared";
 import { MockedProvider } from "@apollo/client/testing";
+import { fireEvent, render, screen } from "@testing-library/react";
+
+import { FavoriteButton, FavoriteButtonProps } from "@components/shared";
 import { useFavorite } from "@lib/mutations";
 
 const favoriteSpy = jest.fn();
@@ -17,11 +18,16 @@ jest.mock("@lib/mutations", () => ({
 
 describe("FavoriteButton", () => {
   const mockId = "001";
+  const props: FavoriteButtonProps = {
+    isFavorite: false,
+    pokemonId: mockId,
+    onError: jest.fn(),
+  };
 
   it("renders", () => {
     render(
       <MockedProvider>
-        <FavoriteButton isFavorite={false} pokemonId={mockId} />
+        <FavoriteButton {...props} />
       </MockedProvider>
     );
     const button = screen.getByRole("button");
@@ -31,7 +37,7 @@ describe("FavoriteButton", () => {
   it("renders favorite", () => {
     render(
       <MockedProvider>
-        <FavoriteButton isFavorite={false} pokemonId={mockId} />
+        <FavoriteButton {...props} />
       </MockedProvider>
     );
     const button = screen.getByRole("button", { name: /favorite/i });
@@ -43,7 +49,7 @@ describe("FavoriteButton", () => {
   it("renders unfavorite", () => {
     render(
       <MockedProvider>
-        <FavoriteButton isFavorite pokemonId={mockId} />
+        <FavoriteButton {...props} isFavorite />
       </MockedProvider>
     );
     const button = screen.getByRole("button", { name: /unfavorite/i });
@@ -55,7 +61,7 @@ describe("FavoriteButton", () => {
   it("triggers favorite mutation on unFavorite click", () => {
     render(
       <MockedProvider>
-        <FavoriteButton isFavorite={false} pokemonId={mockId} />
+        <FavoriteButton {...props} />
       </MockedProvider>
     );
     const button = screen.getByRole("button");
@@ -66,7 +72,7 @@ describe("FavoriteButton", () => {
   it("triggers unFavorite mutation on favorite click", () => {
     render(
       <MockedProvider>
-        <FavoriteButton isFavorite pokemonId={mockId} />
+        <FavoriteButton {...props} isFavorite />
       </MockedProvider>
     );
     const button = screen.getByRole("button");

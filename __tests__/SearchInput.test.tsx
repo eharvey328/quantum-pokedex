@@ -1,5 +1,6 @@
-import { SearchInput } from "@components/ListView/SearchInput";
 import { fireEvent, render, screen } from "@testing-library/react";
+
+import { SearchInput } from "@components/ListView/SearchInput";
 
 describe("SearchInput", () => {
   const mockOnChange = jest.fn();

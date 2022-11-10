@@ -4,13 +4,18 @@ import { useQuery } from "@apollo/client";
 import clsx from "clsx";
 import Head from "next/head";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 
-import { PokemonType, FavoriteButton, Range } from "@components/shared";
+import {
+  PokemonType,
+  FavoriteButton,
+  Range,
+  Snackbar,
+} from "@components/shared";
+import { POKEMON_BY_NAME } from "@lib/queries";
 
 import styles from "./DetailView.module.scss";
 import { Evolutions } from "./Evolutions";
-import { POKEMON_BY_NAME } from "@lib/queries";
 import { SoundButton } from "./SoundButton";
 
 // rewrite link used to change the anchor tag behavior
@@ -18,7 +23,6 @@ import { SoundButton } from "./SoundButton";
 // if rewriteLink is present, the "as" prop is used to change the url visually,
 // but will keep the route as the "as" url.
 // Useful for modal behavior to "embed" the page
-
 export interface DetailViewProps {
   slug: string;
   rewriteLink?: string;
@@ -33,7 +37,9 @@ export const DetailView = ({
   const { data, loading, error } = useQuery(POKEMON_BY_NAME, {
     variables: { name: slug },
   });
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  // the component is called from within the modal when the name query param exists
   const standalonePage = !queryParams?.name;
 
   if (loading) {
@@ -45,6 +51,7 @@ export const DetailView = ({
   }
 
   const pokemon = data?.pokemonByName;
+
   if (!pokemon || error) {
     return (
       <p className={clsx(styles.container, styles.container_empty)}>
@@ -70,7 +77,12 @@ export const DetailView = ({
     <>
       <Head>
         <title>Pokédex Details | {name}</title>
+        <meta
+          name="description"
+          content={`Information and statistics about the ${name} Pokémon`}
+        />
       </Head>
+
       <div className={styles.container}>
         <div className={styles.image_container}>
           <Image
@@ -90,7 +102,11 @@ export const DetailView = ({
           </div>
           <span>
             <SoundButton src={sound} />
-            <FavoriteButton isFavorite={isFavorite} pokemonId={id} />
+            <FavoriteButton
+              isFavorite={isFavorite}
+              pokemonId={id}
+              onError={setErrorMessage}
+            />
           </span>
         </div>
 
@@ -137,6 +153,9 @@ export const DetailView = ({
           />
         </div>
       </div>
+      <Snackbar open={!!errorMessage} onClose={() => setErrorMessage(null)}>
+        {errorMessage}
+      </Snackbar>
     </>
   );
 };

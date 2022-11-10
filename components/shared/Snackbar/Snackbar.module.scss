@@ -1,0 +1,30 @@
+@import "../../../styles/variables";
+
+@keyframes slideIn {
+  from {
+    transform: translate(-50%, 100%);
+  }
+
+  to {
+    transform: translate(-50%, 0);
+  }
+}
+
+.root {
+  position: fixed;
+  z-index: 5500;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: min(30rem, 100%);
+  text-align: center;
+  background-color: #d32f2f;
+  border-radius: 0.6rem;
+  font-weight: 500;
+  font-size: 1.4rem;
+  box-shadow: $shadow-md;
+  padding: 1rem 1.5rem;
+  color: $white;
+  transition: transform $transition-timing;
+  animation: slideIn 350ms;
+}

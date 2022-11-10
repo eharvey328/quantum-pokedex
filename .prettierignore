@@ -1,0 +1,26 @@
+node_modules/
+
+# Documentation
+docs/
+
+bin/
+
+# built directories
+docs/
+dist/
+cjs/
+.reco/
+
+# next
+.next/
+
+# testing
+reports/
+
+# files
+*.log
+.eslintrc.js
+*.config.js
+
+# generated files
+lib/graphql/

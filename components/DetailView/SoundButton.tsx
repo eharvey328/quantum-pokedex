@@ -1,4 +1,7 @@
+import { useMemo } from "react";
+
 import { Button, Icon } from "@components/shared";
+
 import styles from "./DetailView.module.scss";
 
 export interface SoundButton {
@@ -6,7 +9,7 @@ export interface SoundButton {
 }
 
 export const SoundButton = ({ src }: SoundButton) => {
-  const audio = new Audio(src);
+  const audio = useMemo(() => new Audio(src), [src]);
 
   return (
     <Button
