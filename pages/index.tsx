@@ -1,7 +1,8 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 
-import { Layout, ListView } from "@components";
+import { ListView } from "@components/ListView";
+import { Layout } from "@components/shared";
 import { normalizeQueryParam } from "@lib/utils";
 
 export default function HomePage() {

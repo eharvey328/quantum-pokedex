@@ -28,16 +28,16 @@ $primary: map-get($blue, 500);
 $white: #fff;
 $black: map-get($grey, 900);
 
-$text: (
-  "disabled": rgba(0, 0, 0, 0.38),
-  "primary": #131418,
-  "secondary": #42454d,
-);
-
 @function color($name, $shade: 500) {
   $color: map-get($name, $shade);
   @return $color;
 }
+
+$text: (
+  "disabled": rgba(0, 0, 0, 0.38),
+  "primary": color($grey, 900),
+  "secondary": color($grey, 600),
+);
 
 $pokemon-colors: (
   bug: #9dc130,

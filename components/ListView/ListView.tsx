@@ -30,9 +30,11 @@ export interface ListViewProps {
 
 export const ListView = ({ search, type, favorite }: ListViewProps) => {
   const router = useRouter();
-
   const selectedName = normalizeQueryParam(router.query.name);
 
+  // updates the url with the new query values
+  // using the url as store resolves rehydration issues from nextjs
+  // caused when we keep query values in component state
   const updateUrl = (newValue: any) => {
     const merged = { ...router.query, ...newValue };
     const query = removeFalsyObjects(merged);
@@ -42,7 +44,7 @@ export const ListView = ({ search, type, favorite }: ListViewProps) => {
   return (
     <>
       {selectedName && (
-        <Modal open onClose={() => router.back()} data-testid="detail-modal">
+        <Modal open onClose={() => router.back()}>
           <DetailView
             slug={selectedName}
             rewriteLink="/"

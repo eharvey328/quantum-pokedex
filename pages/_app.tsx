@@ -8,6 +8,7 @@ import Icons from "public/icons.svg";
 
 import "@styles/global.scss";
 
+// loads a variable font without a client request
 // https://nextjs.org/docs/basic-features/font-optimization#apply-the-font-in-head
 const fontLoader = Public_Sans({
   subsets: ["latin"],
@@ -18,7 +19,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <meta name="theme-color" content="#FFF" />
+        <meta name="theme-color" content="#eeeff0" />
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <ApolloProvider client={client}>

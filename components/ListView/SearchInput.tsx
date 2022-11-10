@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { KeyboardEvent, useState } from "react";
 
-import { Input, Button, Icon } from "..";
+import { Input, Button, Icon } from "@components/shared";
 
 export interface SearchInputProps {
   defaultValue?: string;
@@ -18,6 +18,7 @@ export const SearchInput = ({
 
   const handleKeyUp = (event: KeyboardEvent<HTMLInputElement>) => {
     event.preventDefault();
+    // only emit change event on "Enter" keypress
     if (event.key !== "Enter") return;
     onChange(value);
   };

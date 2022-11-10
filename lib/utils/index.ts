@@ -1,2 +1,3 @@
 export * from "./normalizeQueryParam";
-export * from "./removeFalsyObjects";
+export * from "./objectUtils";
+export * from "./ascendingSort";

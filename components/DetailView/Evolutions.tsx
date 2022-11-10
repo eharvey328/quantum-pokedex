@@ -1,9 +1,8 @@
 import { ParsedUrlQuery } from "querystring";
+import { ascendingSort } from "@lib/utils";
 
 import styles from "./DetailView.module.scss";
 import { EvolutionItem } from "./EvolutionItem";
-
-const sortById = (a: { id: string }, b: { id: string }) => +a.id - +b.id;
 
 interface Evolution {
   id: string;
@@ -35,10 +34,14 @@ export const Evolutions = ({
     return <p>None</p>;
   }
 
+  // ascending order all stages of the pokemon evolution
+  // including the current pokmeon
   const evolutions = [
-    ...[...previousEvolutions].sort(sortById),
+    ...[...previousEvolutions].sort((a, b) =>
+      ascendingSort(a, b, (val) => val.id)
+    ),
     pokemon,
-    ...[...nextEvolutions].sort(sortById),
+    ...[...nextEvolutions].sort((a, b) => ascendingSort(a, b, (val) => val.id)),
   ];
 
   return (

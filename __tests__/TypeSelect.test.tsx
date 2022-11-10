@@ -1,5 +1,6 @@
 import { MockedProvider } from "@apollo/client/testing";
-import { PokemonTypesQuery, TypeSelect } from "@components/ListView/TypeSelect";
+import { TypeSelect } from "@components/ListView/TypeSelect";
+import { POKEMON_TYPES } from "@lib/queries";
 import { fireEvent, render, screen } from "@testing-library/react";
 
 describe("TypeSelect", () => {
@@ -8,7 +9,7 @@ describe("TypeSelect", () => {
   const mockData = [
     {
       request: {
-        query: PokemonTypesQuery,
+        query: POKEMON_TYPES,
       },
       result: {
         data: { pokemonTypes: ["Grass", "Fire"] },

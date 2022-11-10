@@ -2,18 +2,18 @@ import { render, screen } from "@testing-library/react";
 import { MockedProvider } from "@apollo/client/testing";
 
 import {
-  ListPokemonsQuery,
   PAGE_SIZE,
   PokemonList,
   PokemonListProps,
 } from "@components/ListView/PokemonList";
 import { mockPokemonList } from "./helpers/mocks";
+import { LIST_POKEMONS } from "@lib/queries";
 
 describe("PokemonList", () => {
   const props: PokemonListProps = { search: "", type: "", isFavorite: false };
   const mockResponse = {
     request: {
-      query: ListPokemonsQuery,
+      query: LIST_POKEMONS,
       variables: {
         query: {
           limit: PAGE_SIZE,

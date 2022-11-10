@@ -1,7 +1,7 @@
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
 
 import { PokemonType, FavoriteButton } from "@components/shared";
 import { ListPokemonsQuery } from "@lib/graphql/graphql";
@@ -18,6 +18,9 @@ export interface PokemonCardProps {
 export const PokemonCard = ({ pokemon, isPriorityImage }: PokemonCardProps) => {
   const { query } = useRouter();
   const { id, name, image, types, isFavorite } = pokemon;
+
+  // setting the name query param triggers the modal display
+  // the name param becomes the slug for the detail view
   const href = {
     pathname: "/",
     query: { ...query, name: name.toLowerCase() },

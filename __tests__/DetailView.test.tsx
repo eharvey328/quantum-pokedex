@@ -1,14 +1,15 @@
 import { render, screen } from "@testing-library/react";
 import { MockedProvider } from "@apollo/client/testing";
-import { DetailView, PokemonByNameQuery } from "@components/DetailView";
+import { DetailView } from "@components/DetailView";
 
 import { mockPokemonDetail } from "./helpers/mocks";
+import { POKEMON_BY_NAME } from "@lib/queries";
 
 describe("ListView", () => {
   const mockSlug = "bulbasaur";
   const mockResponse = {
     request: {
-      query: PokemonByNameQuery,
+      query: POKEMON_BY_NAME,
       variables: {
         name: "bulbasaur",
       },

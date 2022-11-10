@@ -2,7 +2,8 @@ import ModalUnstyled, { ModalUnstyledProps } from "@mui/base/ModalUnstyled";
 import clsx from "clsx";
 import React, { ForwardedRef, forwardRef } from "react";
 
-import { Button, Icon } from "@components/shared";
+import { Button } from "../Button/Button";
+import { Icon } from "../Icon/Icon";
 
 import styles from "./Modal.module.scss";
 
