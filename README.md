@@ -139,6 +139,7 @@ For this project, I didn't want to over-complicate too much, but I am aware of a
   - There is some visual glitchy-ness that happens when the modal opens and closes. This has to do with the native focus management, since a focused item is scrolled into view. The modal needs to return focus to the element that was clicked, which causes the scroll jump. Some scroll position management could be added to the modal component.
 - Clear filters button
   - Would be great to add a clear button for better UX.
+- Add PWA manifest.json, more meta tags, and sitemap assets to improve SEO
 
 ## Learnings
 
