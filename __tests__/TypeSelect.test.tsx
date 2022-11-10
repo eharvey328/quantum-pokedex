@@ -1,7 +1,8 @@
 import { MockedProvider } from "@apollo/client/testing";
+import { fireEvent, render, screen } from "@testing-library/react";
+
 import { TypeSelect } from "@components/ListView/TypeSelect";
 import { POKEMON_TYPES } from "@lib/queries";
-import { fireEvent, render, screen } from "@testing-library/react";
 
 describe("TypeSelect", () => {
   const mockOnChange = jest.fn();

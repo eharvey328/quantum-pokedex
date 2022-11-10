@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+
 import { Evolutions } from "@components/DetailView/Evolutions";
 
 import { mockPokemonDetail } from "./helpers/mocks";

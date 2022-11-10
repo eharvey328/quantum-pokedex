@@ -1,10 +1,12 @@
 import { NetworkStatus, useQuery } from "@apollo/client";
 import React, { useState } from "react";
 
+import { Snackbar } from "@components/shared";
+import { LIST_POKEMONS } from "@lib/queries";
+
 import { InfiniteScroll } from "./InfiniteScroll";
 import styles from "./ListView.module.scss";
 import { PokemonCard } from "./PokemonCard";
-import { LIST_POKEMONS } from "@lib/queries";
 
 // number of pokemon per page
 export const PAGE_SIZE = 20;
@@ -19,6 +21,8 @@ export interface PokemonListProps {
 
 export const PokemonList = ({ search, type, isFavorite }: PokemonListProps) => {
   const [fetchMoreError, setFetchMoreError] = useState(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   const query = {
     limit: PAGE_SIZE,
     search,
@@ -79,6 +83,7 @@ export const PokemonList = ({ search, type, isFavorite }: PokemonListProps) => {
             key={pokemon.id + index}
             pokemon={pokemon}
             isPriorityImage={index < AVG_ITEMS_IN_VIEW}
+            onError={setErrorMessage}
           />
         ))}
       </ol>
@@ -89,6 +94,9 @@ export const PokemonList = ({ search, type, isFavorite }: PokemonListProps) => {
         disable={error || pokemons.length < PAGE_SIZE}
         error={fetchMoreError}
       />
+      <Snackbar open={!!errorMessage} onClose={() => setErrorMessage(null)}>
+        {errorMessage}
+      </Snackbar>
     </>
   );
 };

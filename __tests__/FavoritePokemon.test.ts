@@ -1,4 +1,5 @@
 import { shouldAddToCachedPokemonList } from "../lib/mutations";
+
 import { createMockCacheListId } from "./helpers/createMockCacheListId";
 
 describe("FavoritePokemon", () => {

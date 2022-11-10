@@ -1,4 +1,5 @@
 import { useMutation } from "@apollo/client";
+
 import { graphql } from "@lib/graphql";
 
 export const FAVORITE_POKEMON = graphql(`

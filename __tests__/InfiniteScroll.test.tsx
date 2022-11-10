@@ -1,9 +1,10 @@
 import { render, screen } from "@testing-library/react";
+import { mockAllIsIntersecting } from "react-intersection-observer/test-utils";
+
 import {
   InfiniteScroll,
   InfiniteScrollProps,
 } from "@components/ListView/InfiniteScroll";
-import { mockAllIsIntersecting } from "react-intersection-observer/test-utils";
 
 describe("InfiniteScroll", () => {
   const props: InfiniteScrollProps = {
