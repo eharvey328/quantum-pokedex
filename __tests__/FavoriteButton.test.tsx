@@ -2,10 +2,9 @@ import { MockedProvider } from "@apollo/client/testing";
 import { fireEvent, render, screen } from "@testing-library/react";
 
 import { FavoriteButton, FavoriteButtonProps } from "@components/shared";
-import { useFavorite } from "@lib/mutations";
 
-const favoriteSpy = jest.fn();
-const unFavoriteSpy = jest.fn();
+const favoriteSpy = jest.fn().mockResolvedValue(null);
+const unFavoriteSpy = jest.fn().mockResolvedValue(null);
 
 jest.mock("@lib/mutations", () => ({
   useFavorite() {
