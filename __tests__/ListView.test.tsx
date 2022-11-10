@@ -2,9 +2,9 @@ import { render, screen } from "@testing-library/react";
 import { MockedProvider } from "@apollo/client/testing";
 
 import { ListView } from "@components/ListView";
-import { PokemonTypesQuery } from "@components/ListView/TypeSelect";
-import { ListPokemonsQuery, PAGE_SIZE } from "@components/ListView/PokemonList";
+import { PAGE_SIZE } from "@components/ListView/PokemonList";
 import { mockPokemonList } from "./helpers/mocks";
+import { LIST_POKEMONS, POKEMON_TYPES } from "@lib/queries";
 
 describe("ListView", () => {
   describe("initial render", () => {
@@ -35,7 +35,7 @@ describe("ListView", () => {
       const mockData = [
         {
           request: {
-            query: PokemonTypesQuery,
+            query: POKEMON_TYPES,
           },
           result: {
             data: { pokemonTypes: ["Grass", "Fire"] },
@@ -69,7 +69,7 @@ describe("ListView", () => {
     const mockData = [
       {
         request: {
-          query: ListPokemonsQuery,
+          query: LIST_POKEMONS,
           variables: {
             query: {
               limit: PAGE_SIZE,

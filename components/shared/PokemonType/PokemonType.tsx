@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-import { Icon } from "..";
+import { Icon } from "../Icon/Icon";
 
 import styles from "./PokemonType.module.scss";
 

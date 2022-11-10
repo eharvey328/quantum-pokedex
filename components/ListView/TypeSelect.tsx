@@ -1,15 +1,8 @@
 import { useQuery } from "@apollo/client";
 import React from "react";
 
-import { graphql } from "@lib/graphql";
-
 import { Select, Option } from "@components/shared";
-
-export const PokemonTypesQuery = graphql(`
-  query PokemonTypes {
-    pokemonTypes
-  }
-`);
+import { POKEMON_TYPES } from "@lib/queries";
 
 export interface TypeSelectProps {
   value: string;
@@ -17,7 +10,7 @@ export interface TypeSelectProps {
 }
 
 export const TypeSelect = ({ value, onChange }: TypeSelectProps) => {
-  const { data, loading, error } = useQuery(PokemonTypesQuery);
+  const { data, loading, error } = useQuery(POKEMON_TYPES);
 
   return (
     <Select

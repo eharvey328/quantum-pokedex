@@ -20,6 +20,8 @@ export const Range = ({
   ...props
 }: RangeProps) => {
   const labelId = `${label}-label`;
+  // adding 10% padding to min value
+  // so the dispay does not extend past the beginning of the range track
   const padding = (max - min) * 0.1 + min;
   const paddedValue = Math.max(value, padding);
 

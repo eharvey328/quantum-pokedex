@@ -7,44 +7,17 @@ import Image from "next/image";
 import React from "react";
 
 import { PokemonType, FavoriteButton, Range } from "@components/shared";
-import { graphql } from "@lib/graphql";
 
 import styles from "./DetailView.module.scss";
 import { Evolutions } from "./Evolutions";
+import { POKEMON_BY_NAME } from "@lib/queries";
+import { SoundButton } from "./SoundButton";
 
-export const PokemonByNameQuery = graphql(`
-  query PokemonByName($name: String!) {
-    pokemonByName(name: $name) {
-      id
-      number
-      name
-      image
-      weight {
-        minimum
-        maximum
-      }
-      height {
-        minimum
-        maximum
-      }
-      types
-      maxCP
-      maxHP
-      evolutions {
-        id
-        name
-        image
-      }
-      previousEvolutions {
-        id
-        name
-        image
-      }
-      sound
-      isFavorite
-    }
-  }
-`);
+// rewrite link used to change the anchor tag behavior
+// an href will use the rewrite link as its path instead of its default
+// if rewriteLink is present, the "as" prop is used to change the url visually,
+// but will keep the route as the "as" url.
+// Useful for modal behavior to "embed" the page
 
 export interface DetailViewProps {
   slug: string;
@@ -57,7 +30,7 @@ export const DetailView = ({
   rewriteLink,
   queryParams,
 }: DetailViewProps) => {
-  const { data, loading, error } = useQuery(PokemonByNameQuery, {
+  const { data, loading, error } = useQuery(POKEMON_BY_NAME, {
     variables: { name: slug },
   });
 
@@ -80,8 +53,18 @@ export const DetailView = ({
     );
   }
 
-  const { id, name, image, height, weight, types, maxCP, maxHP, isFavorite } =
-    pokemon;
+  const {
+    id,
+    name,
+    image,
+    height,
+    weight,
+    types,
+    maxCP,
+    maxHP,
+    isFavorite,
+    sound,
+  } = pokemon;
 
   return (
     <>
@@ -105,7 +88,10 @@ export const DetailView = ({
             <p className="subtitle">&#35;{id}</p>
             <h1 className="h1">{name}</h1>
           </div>
-          <FavoriteButton isFavorite={isFavorite} pokemonId={id} />
+          <span>
+            <SoundButton src={sound} />
+            <FavoriteButton isFavorite={isFavorite} pokemonId={id} />
+          </span>
         </div>
 
         <div>

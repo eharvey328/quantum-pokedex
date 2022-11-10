@@ -1,31 +1,14 @@
 import { NetworkStatus, useQuery } from "@apollo/client";
 import React, { useState } from "react";
 
-import { graphql } from "@lib/graphql";
-import { PokemonsQueryInput } from "@lib/graphql/graphql";
-
 import { InfiniteScroll } from "./InfiniteScroll";
 import styles from "./ListView.module.scss";
 import { PokemonCard } from "./PokemonCard";
+import { LIST_POKEMONS } from "@lib/queries";
 
-export const ListPokemonsQuery = graphql(`
-  query ListPokemons($query: PokemonsQueryInput!) {
-    pokemons(query: $query) {
-      limit
-      offset
-      count
-      edges {
-        id
-        name
-        image
-        types
-        isFavorite
-      }
-    }
-  }
-`);
-
+// number of pokemon per page
 export const PAGE_SIZE = 20;
+// averge number of pokemon viewable on page load
 const AVG_ITEMS_IN_VIEW = 8;
 
 export interface PokemonListProps {
@@ -36,17 +19,17 @@ export interface PokemonListProps {
 
 export const PokemonList = ({ search, type, isFavorite }: PokemonListProps) => {
   const [fetchMoreError, setFetchMoreError] = useState(null);
-  const query: PokemonsQueryInput = {
+  const query = {
     limit: PAGE_SIZE,
     search,
     filter: {
       type,
-      ...(isFavorite && { isFavorite }),
+      ...(isFavorite && { isFavorite }), // only adds isFavorite filter if it is true
     },
   };
 
   const { data, loading, error, fetchMore, networkStatus } = useQuery(
-    ListPokemonsQuery,
+    LIST_POKEMONS,
     {
       // Setting this value to true will make the component rerender when
       // the "networkStatus" changes, so we are able to know if it is fetching

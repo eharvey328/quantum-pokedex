@@ -3,8 +3,7 @@ import { ParsedUrlQuery } from "querystring";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React from "react";
 
 import styles from "./DetailView.module.scss";
 
