@@ -9,7 +9,7 @@ yarn install
 yarn dev
 ```
 
-Running `yarn dev` will first generate the graphql types, then being the dev process. Open [http://localhost:3000](http://localhost:3000) with your browser to see the app 🚀.
+Running `yarn dev` will first generate the graphql types, then begin the dev process. Open [http://localhost:3000](http://localhost:3000) with your browser to see the app 🚀.
 
 #### Other Scripts
 
