@@ -31,7 +31,7 @@ Running `yarn dev` will first generate the graphql types, then begin the dev pro
       </tr>
       <tr>
         <td><code>yarn test</code></td>
-        <td>Runs all jest unit tests onc.e</td>
+        <td>Runs all jest unit tests once</td>
       </tr>
       <tr>
         <td><code>yarn test:watch</code></td>
