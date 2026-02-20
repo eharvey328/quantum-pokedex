@@ -55,7 +55,6 @@ Running `yarn dev` will first generate the graphql types, then begin the dev pro
       </tr>
   </tbody>
 </table>
-
 ---
 
 ## Technologies
